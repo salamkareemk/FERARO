@@ -111,24 +111,44 @@ The checkout interface includes customer details, delivery information, payment 
 
 ---
 
+## 🚀 Getting Started
+
+Requires [Node.js](https://nodejs.org/) 18 or newer.
+
+```bash
+npm install      # install dependencies
+npm run dev      # start the dev server at http://localhost:5173
+npm run build    # production build into dist/
+npm run preview  # preview the production build
+```
+
+---
+
 ## 📂 Project Structure
 
 ```text
-Delizia-Bakery/
-│
-├── assets/
-│   ├── css/
-│   ├── js/
-│   └── img/
-│
-├── screenshots/
-│   ├── home.png
-│   ├── products.png
-│   ├── cart.png
-│   ├── checkout.png
-│   └── order-confirmation.png
-│
+FERARO/
+├── public/
+│   └── favicon.png
+├── src/
+│   ├── assets/img/            # Images (imported by components)
+│   ├── components/
+│   │   ├── layout/            # Header, Footer, ScrollUp
+│   │   ├── sections/          # Home, About, Products, ProductCard, NewCreations, Contact
+│   │   ├── cart/              # CartDrawer, CartItem
+│   │   ├── modals/            # QuickView, Checkout (+ fields, payment, summary), OrderConfirmation
+│   │   └── ui/                # ToastContainer, Confetti
+│   ├── context/               # CartContext, ToastContext
+│   ├── data/products.js       # Product catalogue
+│   ├── hooks/                 # useScrollY, useScrollReveal
+│   ├── utils/                 # Formatting, validation, orders, localStorage
+│   ├── styles/styles.css
+│   ├── App.jsx
+│   └── main.jsx
+├── Screenshots/
 ├── index.html
+├── package.json
+├── vite.config.js
 └── README.md
 ```
 
