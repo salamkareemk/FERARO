@@ -4912,3 +4912,64 @@ html {
     margin-left: 0;
   }
 }
+
+/*=============== FOOTER - FULL-WIDTH LOGO ===============*/
+.footer {
+  padding-block: clamp(2.5rem, 7vh, 4.5rem) clamp(1.5rem, 4vh, 2.5rem);
+}
+
+.footer_container {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 4vh, 2.5rem);
+}
+
+/* Logo spans the full content width and scales with the screen */
+.footer_logo {
+  display: block;
+  width: 100%;
+  justify-self: stretch;
+}
+
+/* .footer_container img is absolute (for the leaves) - the logo stays in flow */
+.footer_container .footer_logo-img {
+  position: static;
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1800 / 536;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.footer_logo:hover .footer_logo-img {
+  transform: scale(1.01);
+}
+
+/* Copyright left, social icons right, divided from the logo by a line */
+.footer_bottom {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid hsla(201, 16%, 11%, 0.15);
+}
+
+.footer_bottom .footer_copy {
+  margin: 0;
+  text-align: left;
+}
+
+@media screen and (width < 540px) {
+  .footer_bottom {
+    flex-direction: column-reverse;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .footer_bottom .footer_copy {
+    text-align: center;
+  }
+}
