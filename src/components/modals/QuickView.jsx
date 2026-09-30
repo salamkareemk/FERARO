@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { useCart } from "../../context/CartContext.jsx";
-import { useToast } from "../../context/ToastContext.jsx";
 import { formatPrice } from "../../utils/format.js";
+import { openWhatsAppOrder } from "../../utils/whatsapp.js";
 
 /*=============== QUICK VIEW MODAL ===============*/
 const QuickView = ({ product, isOpen, onClose }) => {
-  const { addToCart } = useCart();
-  const { showToast } = useToast();
   const [quantity, setQuantity] = useState(1);
 
   /* Reset quantity every time the modal opens */
@@ -15,19 +12,10 @@ const QuickView = ({ product, isOpen, onClose }) => {
     if (isOpen) setQuantity(1);
   }, [isOpen, product]);
 
-  const handleAdd = () => {
+  const handleBuy = () => {
     if (!product) return;
 
-    const added = addToCart(product.id, quantity);
-
-    if (!added) return;
-
-    showToast(
-      "Added to Cart",
-      `${added.name} × ${quantity} added to your cart.`,
-      "ri-shopping-bag-3-line",
-    );
-
+    openWhatsAppOrder(product, quantity);
     onClose();
   };
 
@@ -98,9 +86,9 @@ const QuickView = ({ product, isOpen, onClose }) => {
               </button>
             </div>
 
-            <button className="quick_view_add" type="button" onClick={handleAdd}>
-              Add to Cart
-              <i className="ri-shopping-bag-3-line"></i>
+            <button className="quick_view_add" type="button" onClick={handleBuy}>
+              Buy
+              <i className="ri-whatsapp-line"></i>
             </button>
           </div>
         </div>

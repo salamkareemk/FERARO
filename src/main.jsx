@@ -11,15 +11,18 @@ import "./styles/styles.css";
 
 import { ToastProvider } from "./context/ToastContext.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
+import { CakesProvider } from "./context/CakesContext.jsx";
 import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <ToastProvider>
-        <CartProvider>
-          <App />
-        </CartProvider>
+        <CakesProvider>
+          <CartProvider>
+            <App />
+          </CartProvider>
+        </CakesProvider>
       </ToastProvider>
     </BrowserRouter>
   </StrictMode>,

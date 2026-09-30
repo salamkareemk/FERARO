@@ -1,24 +1,8 @@
-import { useCart } from "../../context/CartContext.jsx";
-import { useToast } from "../../context/ToastContext.jsx";
 import { formatPrice } from "../../utils/format.js";
+import { openWhatsAppOrder } from "../../utils/whatsapp.js";
 
 /*=============== PRODUCT CARD ===============*/
 const ProductCard = ({ product, onQuickView }) => {
-  const { addToCart } = useCart();
-  const { showToast } = useToast();
-
-  const handleAddToCart = () => {
-    const added = addToCart(product.id);
-
-    if (!added) return;
-
-    showToast(
-      "Added to Cart",
-      `${added.name} added to your cart.`,
-      "ri-shopping-bag-3-line",
-    );
-  };
-
   return (
     <article className="menu_card">
       {/* Long-dash rounded border, drawn with SVG so the dashes are long */}
@@ -30,7 +14,7 @@ const ProductCard = ({ product, onQuickView }) => {
         type="button"
         className="menu_card-image"
         aria-label={`Quick view ${product.name}`}
-        onClick={() => onQuickView(product.id)}
+        onClick={() => onQuickView(product)}
       >
         <img src={product.image} alt={product.name} />
       </button>
@@ -44,9 +28,9 @@ const ProductCard = ({ product, onQuickView }) => {
       <button
         type="button"
         className="menu_card-add"
-        onClick={handleAddToCart}
+        onClick={() => openWhatsAppOrder(product)}
       >
-        Add to Cart
+        Buy
       </button>
     </article>
   );

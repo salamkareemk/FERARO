@@ -1,18 +1,34 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 
-import { galleryCollections, galleryItems } from "../data/gallery.js";
+import { galleryOccasions, galleryItems } from "../data/gallery.js";
+import { useSectionCakes } from "../context/CakesContext.jsx";
 import { useScrollLock } from "../hooks/useSmoothScroll.js";
 
 /*=============== GALLERY PAGE ===============*/
 const GalleryPage = () => {
-  const [collection, setCollection] = useState("All");
+  /* Active filter lives in the URL (?occasion=Birthday) so the
+     Customized Cakes tiles can link straight to a filtered gallery */
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requested = searchParams.get("occasion");
+  const occasion = galleryOccasions.includes(requested) ? requested : "All";
   const [openIndex, setOpenIndex] = useState(null);
 
+  /* Admin uploads first (newest), then the built-in photos */
+  const allItems = [...useSectionCakes("gallery"), ...galleryItems];
+
+  const setOccasion = (name) => {
+    setOpenIndex(null);
+    setSearchParams(name === "All" ? {} : { occasion: name }, {
+      replace: true,
+      preventScrollReset: true,
+    });
+  };
+
   const items =
-    collection === "All"
-      ? galleryItems
-      : galleryItems.filter((item) => item.collection === collection);
+    occasion === "All"
+      ? allItems
+      : allItems.filter((item) => item.occasion === occasion);
 
   useEffect(() => {
     document.title = "Cake Gallery | FERARO";
@@ -39,16 +55,16 @@ const GalleryPage = () => {
           </p>
         </header>
 
-        {/* Collection filters */}
+        {/* Occasion filters */}
         <div className="menu_tabs gallery_tabs" role="tablist">
-          {galleryCollections.map((name) => (
+          {galleryOccasions.map((name) => (
             <button
               key={name}
               type="button"
               role="tab"
-              aria-selected={collection === name}
-              className={`menu_tab ${collection === name ? "active" : ""}`}
-              onClick={() => setCollection(name)}
+              aria-selected={occasion === name}
+              className={`menu_tab ${occasion === name ? "active" : ""}`}
+              onClick={() => setOccasion(name)}
             >
               {name}
             </button>
@@ -73,7 +89,7 @@ const GalleryPage = () => {
 
               <span className="gallery_caption">
                 <span className="gallery_name">{item.name}</span>
-                <span className="gallery_collection">{item.collection}</span>
+                <span className="gallery_collection">{item.occasion}</span>
               </span>
             </button>
           ))}
@@ -152,7 +168,7 @@ const Lightbox = ({ items, index, onChange, onClose }) => {
         <figcaption className="lightbox_caption">
           <strong>{item.name}</strong>
           <span>
-            {item.collection} &middot; {index + 1} / {items.length}
+            {item.occasion} &middot; {index + 1} / {items.length}
           </span>
         </figcaption>
       </figure>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router";
 
 import Header from "./components/layout/Header.jsx";
@@ -8,6 +8,9 @@ import ScrollManager from "./components/layout/ScrollManager.jsx";
 
 import HomePage from "./pages/HomePage.jsx";
 import GalleryPage from "./pages/GalleryPage.jsx";
+
+/* Admin loads the Supabase SDK, so it is split out of the public bundle */
+const AdminPage = lazy(() => import("./pages/AdminPage.jsx"));
 
 import CartDrawer from "./components/cart/CartDrawer.jsx";
 import QuickView from "./components/modals/QuickView.jsx";
@@ -19,7 +22,6 @@ import Confetti from "./components/ui/Confetti.jsx";
 
 import { useCart } from "./context/CartContext.jsx";
 import { useToast } from "./context/ToastContext.jsx";
-import { getProductById } from "./data/products.js";
 import { useScrollReveal } from "./hooks/useScrollReveal.js";
 import { useSmoothScroll } from "./hooks/useSmoothScroll.js";
 
@@ -27,6 +29,7 @@ const App = () => {
   const { cart } = useCart();
   const { showToast } = useToast();
   const { pathname } = useLocation();
+  const isAdmin = pathname.startsWith("/admin");
 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
@@ -50,9 +53,7 @@ const App = () => {
   }, [isOverlayOpen]);
 
   /*=============== HANDLERS ===============*/
-  const openQuickView = (productId) => {
-    const product = getProductById(productId);
-
+  const openQuickView = (product) => {
     if (!product) return;
 
     setQuickViewProduct(product);
@@ -81,7 +82,7 @@ const App = () => {
 
   return (
     <>
-      <Header onCartOpen={() => setIsCartOpen(true)} />
+      {!isAdmin && <Header onCartOpen={() => setIsCartOpen(true)} />}
 
       <ScrollManager />
 
@@ -89,6 +90,14 @@ const App = () => {
         <Routes>
           <Route path="/" element={<HomePage onQuickView={openQuickView} />} />
           <Route path="/gallery" element={<GalleryPage />} />
+          <Route
+            path="/admin"
+            element={
+              <Suspense fallback={<p className="admin_loading">Loading…</p>}>
+                <AdminPage />
+              </Suspense>
+            }
+          />
           <Route path="*" element={<HomePage onQuickView={openQuickView} />} />
         </Routes>
       </main>
@@ -121,9 +130,12 @@ const App = () => {
 
       <Confetti active={isConfirmationOpen} />
 
-      <Footer />
-
-      <ScrollUp />
+      {!isAdmin && (
+        <>
+          <Footer />
+          <ScrollUp />
+        </>
+      )}
     </>
   );
 };

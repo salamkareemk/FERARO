@@ -4,6 +4,7 @@ import { Navigation } from "swiper/modules";
 
 import ProductCard from "./ProductCard.jsx";
 import { categories, products } from "../../data/products.js";
+import { useSectionCakes } from "../../context/CakesContext.jsx";
 
 const ALL = "All";
 const tabs = [ALL, ...categories];
@@ -11,11 +12,13 @@ const tabs = [ALL, ...categories];
 /*=============== PRODUCTS SECTION ===============*/
 const Products = ({ onQuickView }) => {
   const [activeTab, setActiveTab] = useState(ALL);
+  const addedProducts = useSectionCakes("products");
+  const allProducts = [...products, ...addedProducts];
 
   const visibleProducts =
     activeTab === ALL
-      ? products
-      : products.filter((product) => product.category === activeTab);
+      ? allProducts
+      : allProducts.filter((product) => product.category === activeTab);
 
   return (
     <section className="product menu section" id="product">

@@ -15,33 +15,66 @@ import cupcake3 from "../assets/img/about-cupcake-3.png";
 
 /*=============== CAKE GALLERY ===============*/
 /* `shape` sets the tile proportions in the masonry grid:
-   wide = landscape photo, tall = portrait photo, square = square photo */
+   wide = landscape photo, tall = portrait photo, square = square photo
+   `occasion` sets which filter tab the photo appears under */
+
+export const galleryOccasions = [
+  "All",
+  "Birthday",
+  "Anniversary",
+  "Baby Shower",
+  "Wedding",
+  "Engagement",
+  "Graduation",
+  "Kids' Party",
+  "Corporate",
+  "Holidays",
+];
 
 const signature = [
-  { image: homeCake1, name: "Strawberry Drip Cake" },
-  { image: homeCake2, name: "Caramel Nut Cake" },
-  { image: homeCake3, name: "White Chocolate Vanilla Cake" },
-  { image: homeCake4, name: "Chocolate Truffle Cake" },
-].map((item) => ({ ...item, collection: "Signature", shape: "wide" }));
+  { image: homeCake1, name: "Strawberry Drip Cake", occasion: "Anniversary" },
+  { image: homeCake2, name: "Caramel Nut Cake", occasion: "Baby Shower" },
+  { image: homeCake3, name: "White Chocolate Vanilla Cake", occasion: "Graduation" },
+  { image: homeCake4, name: "Chocolate Truffle Cake", occasion: "Corporate" },
+].map((item) => ({ ...item, shape: "wide" }));
 
 const newCreations = [
-  { image: newCake1, name: "Premium Chocolate Cake" },
-  { image: newCake2, name: "Premium Vanilla Cake" },
-  { image: newCake3, name: "Premium Cherry Cake" },
-  { image: newCake4, name: "Premium Blueberry Cake" },
-  { image: newCake5, name: "Premium Raspberry Cake" },
-].map((item) => ({ ...item, collection: "New Creations", shape: "square" }));
+  { image: newCake1, name: "Premium Chocolate Cake", occasion: "Birthday" },
+  { image: newCake2, name: "Premium Vanilla Cake", occasion: "Kids' Party" },
+  { image: newCake3, name: "Premium Cherry Cake", occasion: "Engagement" },
+  { image: newCake4, name: "Premium Blueberry Cake", occasion: "Wedding" },
+  { image: newCake5, name: "Premium Raspberry Cake", occasion: "Holidays" },
+].map((item) => ({ ...item, shape: "square" }));
 
 const cupcakes = [
-  { image: cupcake1, name: "Strawberry Swirl Cupcake" },
-  { image: cupcake2, name: "Choc-Chip Cream Cupcake" },
-  { image: cupcake3, name: "Lemon Berry Cupcake" },
-].map((item) => ({ ...item, collection: "Cupcakes & Treats", shape: "tall" }));
+  { image: cupcake1, name: "Strawberry Swirl Cupcake", occasion: "Baby Shower" },
+  { image: cupcake2, name: "Choc-Chip Cream Cupcake", occasion: "Kids' Party" },
+  { image: cupcake3, name: "Lemon Berry Cupcake", occasion: "Engagement" },
+].map((item) => ({ ...item, shape: "tall" }));
 
-const menuCakes = products.map(({ image, name, category }) => ({
+/* Occasion for each menu cake, keyed by product name */
+const menuOccasions = {
+  "Strawberry Shortcake": "Holidays",
+  "Fresh Strawberry Cream": "Anniversary",
+  "Strawberry Delight Cake": "Engagement",
+  "Classic Vanilla Bean Cake": "Wedding",
+  "Vanilla Buttercream Cake": "Wedding",
+  "Soft Vanilla Sponge Cake": "Baby Shower",
+  "Chocolate Fudge Cake": "Birthday",
+  "Dark Chocolate Velvet Cake": "Anniversary",
+  "Triple Chocolate Cake": "Birthday",
+  "Peanut And Banana Cake": "Holidays",
+  "Filled Walnut Cake": "Graduation",
+  "Glazed Pecan Cake": "Corporate",
+  "Chocolate Brownie": "Corporate",
+  "Cream Cupcake": "Kids' Party",
+  "Lemon Cake": "Graduation",
+};
+
+const menuCakes = products.map(({ image, name }) => ({
   image,
   name,
-  collection: category === "Others" ? "Cupcakes & Treats" : category,
+  occasion: menuOccasions[name] ?? "Birthday",
   shape: "square",
 }));
 
@@ -64,14 +97,3 @@ export const galleryItems = interleave(
   cupcakes,
   menuCakes.slice(8),
 ).map((item, index) => ({ ...item, id: `gallery-${index + 1}` }));
-
-export const galleryCollections = [
-  "All",
-  "Signature",
-  "New Creations",
-  "Strawberry",
-  "Vanilla",
-  "Chocolate",
-  "Dried fruit",
-  "Cupcakes & Treats",
-];

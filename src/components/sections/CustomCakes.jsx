@@ -1,8 +1,17 @@
+import { Link } from "react-router";
+
 import WetPaintButton from "../ui/WetPaintButton.jsx";
 import { customCakes } from "../../data/customCakes.js";
+import { useSectionCakes } from "../../context/CakesContext.jsx";
 
 /*=============== CUSTOMIZED CAKES SECTION ===============*/
 const CustomCakes = () => {
+  /* An admin upload replaces the photo for its occasion (newest wins) */
+  const uploads = useSectionCakes("custom");
+  const tiles = customCakes.map(
+    (cake) => uploads.find((upload) => upload.occasion === cake.occasion) ?? cake,
+  );
+
   return (
     <section className="custom section" id="custom">
       <div className="custom_container container">
@@ -15,17 +24,23 @@ const CustomCakes = () => {
           </blockquote>
         </div>
 
-        {/* Masonry grid - tile heights vary, columns stay level */}
+        {/* Masonry grid - tile heights vary, columns stay level.
+            Each tile opens the gallery filtered to its occasion */}
         <div className="custom_grid">
-          {customCakes.map(({ image, occasion }) => (
-            <figure className="custom_tile" key={occasion}>
+          {tiles.map(({ image, occasion }) => (
+            <Link
+              className="custom_tile"
+              key={occasion}
+              to={`/gallery?occasion=${encodeURIComponent(occasion)}`}
+              aria-label={`View ${occasion} cakes in the gallery`}
+            >
               <img
                 src={image}
                 alt={`Custom ${occasion.toLowerCase()} cake`}
                 loading="lazy"
               />
-              <figcaption className="custom_caption">{occasion}</figcaption>
-            </figure>
+              <span className="custom_caption">{occasion}</span>
+            </Link>
           ))}
         </div>
 

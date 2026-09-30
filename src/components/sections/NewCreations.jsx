@@ -10,6 +10,8 @@ import newCake3 from "../../assets/img/new-cake-3.png";
 import newCake4 from "../../assets/img/new-cake-4.png";
 import newCake5 from "../../assets/img/new-cake-5.png";
 
+import { useSectionCakes } from "../../context/CakesContext.jsx";
+
 const newCakes = [
   { image: newCake1, name: "Premium Chocolate Cake" },
   { image: newCake2, name: "Premium Vanilla Cake" },
@@ -20,6 +22,8 @@ const newCakes = [
 
 /*=============== NEW SECTION ===============*/
 const NewCreations = () => {
+  const slides = [...newCakes, ...useSectionCakes("new")];
+
   return (
     <section className="new section" id="new">
       <div className="new_container container grid">
@@ -53,7 +57,9 @@ const NewCreations = () => {
           <img src={leaf2} alt="" className="new_leaf-2" />
           <img src={leaf3} alt="" className="new_leaf-3" />
 
+          {/* Remount when admin cakes load so the loop includes them */}
           <Swiper
+            key={slides.length}
             className="new_swiper"
             modules={[Autoplay, EffectCreative, Navigation]}
             loop
@@ -73,8 +79,8 @@ const NewCreations = () => {
             }}
             autoplay={{ delay: 2000, disableOnInteraction: false }}
           >
-            {newCakes.map(({ image, name }) => (
-              <SwiperSlide key={name} tag="article" className="new_article">
+            {slides.map(({ image, name }, index) => (
+              <SwiperSlide key={`${name}-${index}`} tag="article" className="new_article">
                 <img
                   src={image}
                   alt="Delicious decorated cake"
