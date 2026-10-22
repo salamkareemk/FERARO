@@ -22,7 +22,18 @@ const AdminLogin = () => {
 
     setIsSubmitting(false);
 
-    if (signInError) setError("Incorrect email or password.");
+    if (!signInError) return;
+
+    /* Wrong credentials come back as status 400; anything else (no status,
+       network failure) means the Supabase server couldn't be reached */
+    const isConnectionProblem =
+      !signInError.status || signInError.name === "AuthRetryableFetchError";
+
+    setError(
+      isConnectionProblem
+        ? "Can't reach the login server. Check the Supabase URL in .env.local and that the Supabase project is active."
+        : "Incorrect email or password.",
+    );
   };
 
   return (

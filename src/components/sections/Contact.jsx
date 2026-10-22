@@ -1,112 +1,204 @@
-import sticker1 from "../../assets/img/sticker-1.svg";
-import sticker4 from "../../assets/img/sticker-4.svg";
-import sticker5 from "../../assets/img/sticker-5.svg";
+import { getProductById } from "../../data/products.js";
+import { formatPrice } from "../../utils/format.js";
+import { WHATSAPP_NUMBER } from "../../utils/whatsapp.js";
 
-const socialLinks = [
-  {
-    href: "https://api.whatsapp.com/send?phone=51123456789&text=Hello, more information!",
-    label: "Whatsapp",
-    icon: "ri-whatsapp-line",
-  },
-  {
-    href: "https://m.me/Azeem Toretto",
-    label: "Messenger",
-    icon: "ri-messenger-line",
-  },
-  {
-    href: "mailto:delizia@email.com",
-    label: "Email",
-    icon: "ri-mail-line",
-  },
-];
+/* Shown as +91 62827 99461 */
+const PHONE_DISPLAY = `+${WHATSAPP_NUMBER.slice(0, 2)} ${WHATSAPP_NUMBER.slice(2, 7)} ${WHATSAPP_NUMBER.slice(7)}`;
 
-const MAP_URL =
-  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d249743.68803786347!2d-76.98777915!3d-12.0266383!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c5f619ee3ec7%3A0x14206cb9cc452e4a!2zTGltYSwgUMOpcm91!5e0!3m2!1sfr!2s!4v1789066251673!5m2!1sfr!2s";
+const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+  "Hello Feraro! I'd like to order a custom cake.",
+)}`;
 
-/*=============== CONTACT SECTION ===============*/
+/* Cakes shown inside the phone mockups */
+const menuCakes = ["strawberry-2", "chocolate-3", "vanilla-1", "others-2"].map(
+  getProductById,
+);
+const featuredCake = getProductById("chocolate-1");
+
+/*=============== ORDER / CONTACT SECTION ===============*/
 const Contact = () => {
   return (
-    <section className="contact section" id="contact">
-      <div className="contact_container container grid">
-        <div className="contact_content">
-          <h2 className="section_title">
-            Order Your <br />
-            Custom Cake Now!
+    <section className="order section" id="contact">
+      <div className="order_container container">
+        {/* Text + buttons */}
+        <div className="order_content">
+          <h2 className="order_title">
+            Feraro &mdash; <br />
+            Order. <br />
+            Celebrate. Enjoy.
           </h2>
 
-          <div className="contact_data">
-            <div className="contact_info">
-              <h3 className="contact_title">Location:</h3>
-              <address className="contact_address">
-                128th Street Avenue, <br />
-                Miraflores, Lima - Peru
-              </address>
-            </div>
+          <p className="order_description">
+            Custom cakes handcrafted for birthdays, weddings and every
+            celebration in between. Tell us your idea on WhatsApp, give us a
+            call, or drop by your nearest Feraro outlet.
+          </p>
 
-            <div className="contact_info">
-              <h3 className="contact_title">Call Us:</h3>
-              <address className="contact_address">
-                <a href="tel:+1234-9876-00">+1234-9876-00</a>
-                <a href="tel:+00987654321">+00987654321</a>
-              </address>
-            </div>
+          <div className="order_buttons">
+            <a
+              href={WHATSAPP_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="order_button"
+            >
+              <i className="ri-whatsapp-line order_button-icon"></i>
+              <span className="order_button-text">
+                <small>Order on</small>
+                WhatsApp
+              </span>
+            </a>
 
-            <div className="contact_info">
-              <h3 className="contact_title">Operational:</h3>
-              <p
-                className="contact_address"
-                itemScope
-                itemType="https://schema.org/LocalBusiness"
-              >
-                <span itemProp="openingHours" content="Mo-Sa 09:00-20:00">
-                  Monday - Saturday: 9am - 8pm
-                </span>
-                <span itemProp="openingHours" content="Su 09:00-18:00">
-                  Sunday: 9am - 6pm
-                </span>
-              </p>
-            </div>
-
-            <div className="contact_info">
-              <h3 className="contact_title">Messages:</h3>
-              <ul className="contact_social">
-                {socialLinks.map(({ href, label, icon }) => (
-                  <li key={label}>
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={label}
-                      className="contact_social-link"
-                    >
-                      <i className={icon}></i>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <img src={sticker4} alt="" className="contact_sticker-1" />
-            <img src={sticker1} alt="" className="contact_sticker-2" />
-            <img src={sticker5} alt="" className="contact_sticker-3" />
+            <a href={`tel:+${WHATSAPP_NUMBER}`} className="order_button">
+              <i className="ri-phone-line order_button-icon"></i>
+              <span className="order_button-text">
+                <small>Call us</small>
+                {PHONE_DISPLAY}
+              </span>
+            </a>
           </div>
+
+          <a href="#outlets" className="order_outlets-link">
+            <i className="ri-map-pin-2-line"></i>
+            Or visit one of our outlets
+          </a>
         </div>
 
-        <div className="contact_map">
-          <iframe
-            src={MAP_URL}
-            title="FERARO location"
-            width="600"
-            height="450"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="strict-origin-when-cross-origin"
-          ></iframe>
+        {/* Visual: two phone mockups wrapped by a glowing ribbon (decorative) */}
+        <div className="order_visual" aria-hidden="true">
+          <Ribbon className="order_ribbon order_ribbon-back" id="back" />
+
+          {/* Back phone - cake menu */}
+          <div className="order_phone order_phone-back">
+            <div className="order_screen">
+              <div className="order_status">
+                <span>9:41</span>
+                <span className="order_notch"></span>
+                <i className="ri-signal-wifi-fill"></i>
+              </div>
+
+              <div className="order_chips">
+                <span className="active">For you</span>
+                <span>Cakes</span>
+                <span>Cupcakes</span>
+              </div>
+
+              <div className="order_grid">
+                {menuCakes.map((cake) => (
+                  <div className="order_tile" key={cake.id}>
+                    <img src={cake.image} alt="" />
+                    <span>{formatPrice(cake.price)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Front phone - order screen */}
+          <div className="order_phone order_phone-front">
+            <div className="order_screen">
+              <div className="order_status">
+                <span>9:41</span>
+                <span className="order_notch"></span>
+                <i className="ri-signal-wifi-fill"></i>
+              </div>
+
+              <div className="order_app-bar">
+                <i className="ri-menu-line"></i>
+                <strong>FERARO</strong>
+                <i className="ri-shopping-bag-3-line"></i>
+              </div>
+
+              <div className="order_feature">
+                <span className="order_badge">Bestseller</span>
+                <img src={featuredCake.image} alt="" />
+              </div>
+
+              <div className="order_feature-info">
+                <strong>{featuredCake.name}</strong>
+                <span>{formatPrice(featuredCake.price)}</span>
+              </div>
+
+              <div className="order_chat">
+                <span className="order_bubble">
+                  Can you add &ldquo;Happy Birthday Ammu&rdquo;? 🎂
+                </span>
+                <span className="order_bubble order_bubble-reply">
+                  Of course! Ready by 6pm ✨
+                </span>
+              </div>
+
+              <span className="order_cta">
+                <i className="ri-whatsapp-line"></i>
+                Order on WhatsApp
+              </span>
+            </div>
+          </div>
+
+          <Ribbon className="order_ribbon order_ribbon-front" id="front" />
         </div>
       </div>
     </section>
   );
 };
+
+/* Glowing neon ribbon. The same curve is drawn twice - once behind the phones
+   and once in front (clipped to its lower part) - so it weaves through them. */
+const RIBBON_PATH =
+  "M -60 150 C 180 40, 560 60, 580 230 C 600 380, 160 360, 140 500 C 120 640, 520 700, 700 600";
+
+const Ribbon = ({ className, id }) => (
+  <svg
+    className={className}
+    viewBox="0 0 640 720"
+    preserveAspectRatio="xMidYMid meet"
+    fill="none"
+  >
+    <defs>
+      <linearGradient id={`ribbon-${id}`} x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#ff8a9b" />
+        <stop offset="45%" stopColor="#ff3355" />
+        <stop offset="100%" stopColor="#c4122f" />
+      </linearGradient>
+
+      <filter id={`glow-${id}`} x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur stdDeviation="18" />
+      </filter>
+
+      {id === "front" && (
+        <clipPath id="ribbon-front-clip">
+          <rect x="300" y="470" width="400" height="260" />
+        </clipPath>
+      )}
+    </defs>
+
+    <g clipPath={id === "front" ? "url(#ribbon-front-clip)" : undefined}>
+      {/* Soft outer glow */}
+      <path
+        d={RIBBON_PATH}
+        stroke="#ff2d55"
+        strokeOpacity="0.55"
+        strokeWidth="70"
+        strokeLinecap="round"
+        filter={`url(#glow-${id})`}
+      />
+      {/* Ribbon body */}
+      <path
+        d={RIBBON_PATH}
+        stroke={`url(#ribbon-${id})`}
+        strokeWidth="44"
+        strokeLinecap="round"
+      />
+      {/* Shine along the ribbon */}
+      <path
+        className="order_ribbon-shine"
+        d={RIBBON_PATH}
+        stroke="#ffffff"
+        strokeOpacity="0.45"
+        strokeWidth="6"
+        strokeLinecap="round"
+      />
+    </g>
+  </svg>
+);
 
 export default Contact;
