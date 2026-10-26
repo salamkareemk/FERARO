@@ -26,7 +26,10 @@ const reveals = [
   [`.custom_more`, { delay: 900 }],
 
   [`.outlets_header`, {}],
-  [`.outlets_card`, { delay: 400, interval: 120 }],
+  /* Reveal the whole row - cards off to the side of the swipe row
+     never count as on screen, so per-card reveals would stay hidden */
+  [`.outlets_list`, { delay: 400 }],
+  [`.outlets_dots`, { delay: 600 }],
 
   [`.gallery_header`, { origin: "top" }],
   [`.gallery_tabs`, { delay: 300 }],

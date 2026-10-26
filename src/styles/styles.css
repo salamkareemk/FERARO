@@ -3829,36 +3829,82 @@ html {
 }
 
 /* Cards: a scrollable row on small screens, five columns on desktop */
+/* Swipe row (phones & tablets): snaps card by card, scrollbar hidden.
+   Card widths are whole fractions of the row, so a card is never cut off:
+   1 per view on phones, 2 on tablets, 3 on small laptops */
 .outlets_list {
+  --per-view: 1;
+  --gap: 1rem;
+
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 78%;
-  gap: 1rem;
+  grid-auto-columns: calc(
+    (100% - (var(--per-view) - 1) * var(--gap)) / var(--per-view)
+  );
+  gap: var(--gap);
   overflow-x: auto;
+  overflow-y: hidden; /* no vertical bar from the card hover lift */
   scroll-snap-type: x mandatory;
-  padding: 0.5rem 0.25rem 1.25rem;
-  scrollbar-width: thin;
+  overscroll-behavior-x: contain;
+  padding-block: 0.75rem 1.25rem;
+  scrollbar-width: none;
+}
+
+.outlets_list::-webkit-scrollbar {
+  display: none;
 }
 
 @media screen and (width >= 540px) {
   .outlets_list {
-    grid-auto-columns: 44%;
-    gap: 1.25rem;
+    --per-view: 2;
+    --gap: 1.25rem;
   }
 }
 
 @media screen and (width >= 900px) {
   .outlets_list {
-    grid-auto-columns: 31%;
+    --per-view: 3;
   }
 }
 
+/* Desktop: all five in one row, no swiping */
 @media screen and (width >= 1150px) {
   .outlets_list {
     grid-auto-flow: row;
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: clamp(1rem, 1.5vw, 1.5rem);
     overflow: visible;
+  }
+}
+
+/* Dots under the swipe row */
+.outlets_dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.outlets_dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  background-color: hsla(30, 30%, 40%, 0.25);
+  border-radius: 999px !important;
+  cursor: pointer;
+  transition:
+    width 0.3s,
+    background-color 0.3s;
+}
+
+.outlets_dot.active {
+  width: 24px;
+  background-color: #a48468;
+}
+
+@media screen and (width >= 1150px) {
+  .outlets_dots {
+    display: none;
   }
 }
 
@@ -5609,5 +5655,50 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .nc_tile-info {
     transition-duration: 0.01s;
+  }
+}
+
+/*=============== HERO ORDER ON SMALL SCREENS ===============*/
+/* Phones & small tablets: title -> description -> cake -> slider controls
+   -> buttons. `display: contents` lets the text block's children join the
+   hero grid directly, so `order` can place the cake between them. */
+@media screen and (width < 900px) {
+  .home_container {
+    row-gap: 0;
+    text-align: center;
+  }
+
+  .home_data {
+    display: contents;
+  }
+
+  .home_title {
+    order: 1;
+  }
+
+  .home_description {
+    order: 2;
+    margin-bottom: 1.5rem;
+  }
+
+  .home_images {
+    order: 3;
+  }
+
+  /* Dots + arrows sit right under the cake they control */
+  .home_controls {
+    order: 4;
+    justify-items: center;
+    row-gap: 1rem;
+    margin-top: 1.25rem;
+  }
+
+  .home_actions {
+    order: 5;
+    justify-content: center;
+    margin-top: 2rem;
+    /* Room for the paint drips under each button when they stack */
+    row-gap: 2.25rem;
+    padding-bottom: 2rem;
   }
 }
