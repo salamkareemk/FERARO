@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 
-import { galleryOccasions, galleryItems } from "../data/gallery.js";
-import { useSectionCakes } from "../context/CakesContext.jsx";
+import { galleryOccasions } from "../data/gallery.js";
+import { useCakes } from "../context/CakesContext.jsx";
 import { useScrollLock } from "../hooks/useSmoothScroll.js";
 
 /*=============== GALLERY PAGE ===============*/
@@ -14,8 +14,9 @@ const GalleryPage = () => {
   const occasion = galleryOccasions.includes(requested) ? requested : "All";
   const [openIndex, setOpenIndex] = useState(null);
 
-  /* Admin uploads first (newest), then the built-in photos */
-  const allItems = [...useSectionCakes("gallery"), ...galleryItems];
+  /* Newest first - everything the admin dashboard manages */
+  const { sections, status } = useCakes();
+  const allItems = sections.gallery;
 
   const setOccasion = (name) => {
     setOpenIndex(null);
@@ -72,7 +73,9 @@ const GalleryPage = () => {
         </div>
 
         <p className="gallery_count">
-          {items.length} {items.length === 1 ? "photo" : "photos"}
+          {status === "loading"
+            ? "Loading photos…"
+            : `${items.length} ${items.length === 1 ? "photo" : "photos"}`}
         </p>
 
         {/* Masonry - CSS columns, tile heights follow each photo's shape */}

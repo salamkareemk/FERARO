@@ -14,10 +14,12 @@ const AdminPage = () => {
 
     if (!supabase) return;
 
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setIsChecking(false);
-    });
+    /* If the session can't be checked, fall back to the sign-in form */
+    supabase.auth
+      .getSession()
+      .then(({ data }) => setSession(data.session))
+      .catch((error) => console.error("Could not check the admin session", error))
+      .finally(() => setIsChecking(false));
 
     const { data } = supabase.auth.onAuthStateChange((_event, nextSession) =>
       setSession(nextSession),

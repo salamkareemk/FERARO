@@ -1,16 +1,12 @@
 import { Link } from "react-router";
 
 import WetPaintButton from "../ui/WetPaintButton.jsx";
-import { customCakes } from "../../data/customCakes.js";
 import { useSectionCakes } from "../../context/CakesContext.jsx";
 
 /*=============== CUSTOMIZED CAKES SECTION ===============*/
 const CustomCakes = () => {
-  /* An admin upload replaces the photo for its occasion (newest wins) */
-  const uploads = useSectionCakes("custom");
-  const tiles = customCakes.map(
-    (cake) => uploads.find((upload) => upload.occasion === cake.occasion) ?? cake,
-  );
+  /* One tile per occasion that has a photo, in tile order */
+  const tiles = useSectionCakes("custom");
 
   return (
     <section className="custom section" id="custom">

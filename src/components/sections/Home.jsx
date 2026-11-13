@@ -20,7 +20,14 @@ import homeCake2 from "../../assets/img/home-cake-2.png";
 import homeCake3 from "../../assets/img/home-cake-3.png";
 import homeCake4 from "../../assets/img/home-cake-4.png";
 
-const homeCakes = [homeCake1, homeCake2, homeCake3, homeCake4];
+/* `zoom`: shown slightly larger - the rainbow cake's tall topper makes the
+   cake itself look small next to the others */
+const homeCakes = [
+  { image: homeCake1, zoom: true },
+  { image: homeCake2 },
+  { image: homeCake3 },
+  { image: homeCake4 },
+];
 
 /*=============== HOME SECTION ===============*/
 const Home = () => {
@@ -133,9 +140,9 @@ const Home = () => {
             {homeCakes.map((cake, index) => (
               <SwiperSlide key={index} tag="article" className="home_article">
                 <img
-                  src={cake}
+                  src={cake.image}
                   alt="Delicious decorated cake"
-                  className="home_cake"
+                  className={`home_cake ${cake.zoom ? "home_cake-zoom" : ""}`}
                 />
               </SwiperSlide>
             ))}

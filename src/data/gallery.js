@@ -32,10 +32,10 @@ export const galleryOccasions = [
 ];
 
 const signature = [
-  { image: homeCake1, name: "Strawberry Drip Cake", occasion: "Anniversary" },
-  { image: homeCake2, name: "Caramel Nut Cake", occasion: "Baby Shower" },
-  { image: homeCake3, name: "White Chocolate Vanilla Cake", occasion: "Graduation" },
-  { image: homeCake4, name: "Chocolate Truffle Cake", occasion: "Corporate" },
+  { image: homeCake1, name: "Rainbow", occasion: "Anniversary" },
+  { image: homeCake2, name: "Red Velvet", occasion: "Baby Shower" },
+  { image: homeCake3, name: "White German Nuts", occasion: "Graduation" },
+  { image: homeCake4, name: "Milk Vancho", occasion: "Corporate" },
 ].map((item) => ({ ...item, shape: "wide" }));
 
 const newCreations = [

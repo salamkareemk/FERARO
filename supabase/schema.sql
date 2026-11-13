@@ -61,3 +61,54 @@ drop policy if exists "Admins can delete cake photos" on storage.objects;
 create policy "Admins can delete cake photos"
   on storage.objects for delete to authenticated
   using (bucket_id = 'cakes');
+
+
+-- =============== V2: EDIT EVERY CAKE FROM THE DASHBOARD ===============
+-- Safe to run again. Needed for the "Import built-in cakes" button and Edit.
+
+-- Which built-in cake a row was imported from (lets the import skip cakes
+-- it already copied)
+alter table public.cakes add column if not exists builtin_key text;
+create unique index if not exists cakes_builtin_key_key on public.cakes (builtin_key);
+
+-- Basic data checks (`not valid` = only new and edited rows are checked)
+do $$
+begin
+  alter table public.cakes
+    add constraint cakes_price_not_negative check (price is null or price >= 0) not valid;
+exception when duplicate_object then null;
+end $$;
+
+do $$
+begin
+  alter table public.cakes
+    add constraint cakes_product_fields check (
+      section <> 'products'
+      or (price is not null and category is not null and length(trim(name)) > 0)
+    ) not valid;
+exception when duplicate_object then null;
+end $$;
+
+-- One-row settings table: when the built-in cakes were imported.
+-- Once set, the website shows only the cakes in this database.
+create table if not exists public.site_settings (
+  id smallint primary key default 1 check (id = 1),
+  catalog_imported_at timestamptz
+);
+
+alter table public.site_settings enable row level security;
+
+drop policy if exists "Anyone can view site settings" on public.site_settings;
+create policy "Anyone can view site settings"
+  on public.site_settings for select
+  using (true);
+
+drop policy if exists "Admins can add site settings" on public.site_settings;
+create policy "Admins can add site settings"
+  on public.site_settings for insert to authenticated
+  with check (true);
+
+drop policy if exists "Admins can edit site settings" on public.site_settings;
+create policy "Admins can edit site settings"
+  on public.site_settings for update to authenticated
+  using (true) with check (true);

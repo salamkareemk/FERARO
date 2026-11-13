@@ -3,24 +3,10 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
-import newCake1 from "../../assets/img/new-cake-1.png";
-import newCake2 from "../../assets/img/new-cake-2.png";
-import newCake3 from "../../assets/img/new-cake-3.png";
-import newCake4 from "../../assets/img/new-cake-4.png";
-import newCake5 from "../../assets/img/new-cake-5.png";
-
 import { useSectionCakes } from "../../context/CakesContext.jsx";
 import { WHATSAPP_NUMBER } from "../../utils/whatsapp.js";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
-
-const newCakes = [
-  { image: newCake1, name: "Premium Chocolate Cake" },
-  { image: newCake2, name: "Premium Vanilla Cake" },
-  { image: newCake3, name: "Premium Cherry Cake" },
-  { image: newCake4, name: "Premium Blueberry Cake" },
-  { image: newCake5, name: "Premium Raspberry Cake" },
-];
 
 /* Tile widths (x tile height) - varied like an editorial layout */
 const WIDTHS = [1.15, 0.9, 1.45, 1.05, 0.95, 1.3];
@@ -50,9 +36,8 @@ const NewCreations = () => {
   const engineRef = useRef(null); // lets click / focus handlers move the strip
   const motion = useRef({ offset: 0, target: 0, ready: false }); // survives re-renders
 
-  const adminCakes = useSectionCakes("new");
-  const cakes = useMemo(() => [...newCakes, ...adminCakes], [adminCakes]);
-  const count = String(cakes.length).padStart(2, "0");
+  /* Everything the admin dashboard manages, in display order */
+  const cakes = useSectionCakes("new");
 
   /* The cake list is repeated until the loop is wider than the screen */
   const [repeats, setRepeats] = useState(3);
@@ -64,26 +49,24 @@ const NewCreations = () => {
     [cakes, repeats],
   );
 
-  /* Intro: title, labels and tiles rise into view one after another */
+  /* Intro: title, then tiles rise into view */
   useGSAP(
     () => {
+      /* Wait for the cakes to load, so the tiles exist to animate */
+      if (!cakes.length) return;
+
       const mm = gsap.matchMedia();
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap
+        const intro = gsap
           .timeline({
-            scrollTrigger: { trigger: root.current, start: "top 70%" },
+            scrollTrigger: { trigger: root.current, start: "top 70%", once: true },
           })
           .from(".nc_title-inner", {
             yPercent: 110,
             duration: 1,
             ease: "power4.out",
           })
-          .from(
-            [".nc_caption", ".nc_meta-item"],
-            { y: 12, autoAlpha: 0, duration: 0.6, stagger: 0.06 },
-            "-=0.6",
-          )
           .from(
             ".nc_tile-link",
             {
@@ -95,6 +78,14 @@ const NewCreations = () => {
             },
             "-=0.5",
           );
+
+        /* Set up after the section is already on screen or scrolled past
+           (cakes load after the page, scroll restored on reload, admin
+           change picked up mid-page): play now so the title is never
+           left hidden waiting for a scroll trigger that already passed */
+        if (root.current.getBoundingClientRect().top < window.innerHeight * 0.7) {
+          intro.play();
+        }
       });
     },
     { scope: root, dependencies: [cakes.length] },
@@ -102,6 +93,9 @@ const NewCreations = () => {
 
   /*=============== STRIP ENGINE ===============*/
   useEffect(() => {
+    /* Nothing to lay out while the cakes load (or if every slide was removed) */
+    if (!items.length) return;
+
     const viewport = viewportRef.current;
     const tiles = tileRefs.current.slice(0, items.length);
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -444,24 +438,7 @@ const NewCreations = () => {
           <h2 className="nc_title">
             <span className="nc_title-inner">New Creations</span>
           </h2>
-
-          <p className="nc_caption">
-            Freshly baked <br />
-            this season
-          </p>
         </header>
-
-        <ul className="nc_meta">
-          <li className="nc_meta-item nc_meta-hint">Swipe &middot; Drag to explore</li>
-          <li className="nc_meta-item">{new Date().getFullYear()}</li>
-          <li className="nc_meta-item">{count} Cakes</li>
-          <li className="nc_meta-item">Made to order</li>
-          <li className="nc_meta-item">
-            <a href="#contact" className="nc_meta-link">
-              Order now
-            </a>
-          </li>
-        </ul>
       </div>
 
       {/* Strip of cakes - the centre one is always active */}

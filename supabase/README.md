@@ -35,14 +35,31 @@ The site keeps its built-in cakes and shows the uploaded ones with them.
 6. **Vercel:** add the same two variables under **Project → Settings →
    Environment Variables**, then redeploy.
 
+7. **Make the built-in cakes editable (one time).** Sign in at `/admin` and click
+   **Import built-in cakes**. This copies every cake bundled with the website
+   (photos and details) into Supabase. After that the website shows only the
+   cakes in the database, so every cake can be edited or removed. If the import
+   stops halfway (for example the connection drops), click it again - cakes
+   already copied are skipped.
+
+   Already set up before this step existed? Run [`schema.sql`](./schema.sql)
+   again first - it is safe to re-run and adds what the import needs.
+
 ## How each section behaves
 
-| Section          | Upload fields                          | On the website                                  |
-| ---------------- | -------------------------------------- | ----------------------------------------------- |
-| Products         | photo, name, description, price, category | Card after the built-in cakes, with a Buy button |
-| New Creations    | photo, name                            | Extra slide in the slider                       |
-| Customized Cakes | photo, occasion                        | Replaces that occasion's tile photo             |
-| Cake Gallery     | photo, name, occasion, tile shape      | Shown first under its occasion filter           |
+| Section          | Fields                                    | On the website                         |
+| ---------------- | ----------------------------------------- | -------------------------------------- |
+| Products         | photo, name, description, price, category | Card in "Your Indulgence", Buy button  |
+| New Creations    | photo, name                               | Slide in the New Creations strip       |
+| Customized Cakes | photo, occasion                           | One photo per occasion tile            |
+| Cake Gallery     | photo, name, occasion, tile shape         | Newest first under its occasion filter |
 
-Deleting a photo in the dashboard removes it from the website and from storage.
-If you delete a Customized Cakes upload, that tile goes back to its built-in photo.
+- **Edit** changes the details and, optionally, the photo. The old photo file
+  is removed from storage.
+- **Remove** deletes the cake from the website and its photo from storage.
+  A Customized Cakes tile with no photo is hidden on the website.
+- Changes go live straight away. Open pages pick them up when the visitor
+  returns to the tab; no redeploy is needed.
+- Before the import, the bundled cakes are shown with a **Built-in** badge and
+  can't be edited. If Supabase can't be reached, the website falls back to the
+  bundled cakes.

@@ -8,6 +8,7 @@ export const isSupabaseConfigured = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
 
 export const CAKES_TABLE = "cakes";
 export const CAKES_BUCKET = "cakes";
+export const SETTINGS_TABLE = "site_settings";
 
 /* Sections the admin can add photos to */
 export const CAKE_SECTIONS = {

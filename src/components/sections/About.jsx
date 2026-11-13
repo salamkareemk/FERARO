@@ -232,10 +232,16 @@ const About = () => {
           </h2>
 
           <p className="passion_description">
-            We are a bakery specializing in homemade desserts, custom cakes,
-            brownies, and a wide variety of gourmet sweets. Our passion for
-            baking allows us to create perfect sweet experiences for
-            celebrations, special events, or simply to enjoy anytime.
+            We believe every moment deserves a little sweetness. We are
+            passionate about creating delicious cakes, freshly baked treats,
+            delightful desserts, creamy ice creams, and a variety of
+            mouth-watering refreshments. From beautifully crafted cakes for
+            special celebrations to irresistible pastries, sundaes, and everyday
+            favourites, every offering is made to bring happiness to your taste
+            buds. Whether you&apos;re celebrating a special occasion, spending
+            time with loved ones, or simply craving something sweet, Feraro is
+            your perfect destination for unforgettable flavours and delightful
+            experiences.
           </p>
 
           <ul className="passion_stats">

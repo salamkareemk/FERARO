@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 
 import ProductCard from "./ProductCard.jsx";
-import { categories, products } from "../../data/products.js";
+import { categories } from "../../data/products.js";
 import { useSectionCakes } from "../../context/CakesContext.jsx";
 
 const ALL = "All";
@@ -12,8 +12,8 @@ const tabs = [ALL, ...categories];
 /*=============== PRODUCTS SECTION ===============*/
 const Products = ({ onQuickView }) => {
   const [activeTab, setActiveTab] = useState(ALL);
-  const addedProducts = useSectionCakes("products");
-  const allProducts = [...products, ...addedProducts];
+  /* Everything the admin dashboard manages, in display order */
+  const allProducts = useSectionCakes("products");
 
   const visibleProducts =
     activeTab === ALL
