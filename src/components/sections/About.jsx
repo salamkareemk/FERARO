@@ -9,12 +9,14 @@ import cupcake2 from "../../assets/img/about-cupcake-2.png";
 import cupcake3 from "../../assets/img/about-cupcake-3.png";
 import cakeSlice from "../../assets/img/home-slice-cake-1.png";
 
+import { outlets } from "../../data/outlets.js";
+
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const TITLE = ["Our", "passion", "for", "baking", "cakes"];
 
 const stats = [
-  { value: 5, suffix: "", label: "Outlets" },
+  { value: outlets.length, suffix: "", label: "Outlets" }, // follows the outlets list
   { value: 15, suffix: "+", label: "Signature cakes" },
   { value: 100, suffix: "%", label: "Handmade" },
 ];

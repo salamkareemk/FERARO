@@ -50,7 +50,6 @@ const columns = [
         highlight: true,
       },
       { label: PHONE_DISPLAY, href: `tel:+${WHATSAPP_NUMBER}` },
-      { label: "Find an Outlet", section: "outlets" },
     ],
   },
 ];

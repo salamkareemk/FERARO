@@ -10,10 +10,10 @@ const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponen
 )}`;
 
 /* Cakes shown inside the phone mockups */
-const menuCakes = ["strawberry-2", "chocolate-3", "vanilla-1", "others-2"].map(
+const menuCakes = ["red-velvet", "choco-caramel", "fresh-fruit-cake", "rainbow"].map(
   getProductById,
 );
-const featuredCake = getProductById("chocolate-1");
+const featuredCake = getProductById("belgium-chocolate");
 
 /*=============== ORDER / CONTACT SECTION ===============*/
 const Contact = () => {

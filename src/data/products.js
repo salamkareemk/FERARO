@@ -1,157 +1,136 @@
-import strawberry1 from "../assets/img/product-strawberry-1.png";
-import strawberry2 from "../assets/img/product-strawberry-2.png";
-import strawberry3 from "../assets/img/product-strawberry-3.png";
-import vanilla1 from "../assets/img/product-vanilla-1.png";
-import vanilla2 from "../assets/img/product-vanilla-2.png";
-import vanilla3 from "../assets/img/product-vanilla-3.png";
-import chocolate1 from "../assets/img/product-chocolate-1.png";
-import chocolate2 from "../assets/img/product-chocolate-2.png";
-import chocolate3 from "../assets/img/product-chocolate-3.png";
-import driedFruit1 from "../assets/img/product-dried-fruit-1.png";
-import driedFruit2 from "../assets/img/product-dried-fruit-2.png";
-import driedFruit3 from "../assets/img/product-dried-fruit-3.png";
-import others1 from "../assets/img/product-others-1.png";
-import others2 from "../assets/img/product-others-2.png";
-import others3 from "../assets/img/product-others-3.png";
+import belgiumChocolate from "../assets/img/menu/belgium-chocolate.png";
+import chocoCaramel from "../assets/img/menu/choco-caramel.png";
+import chocoSpanish from "../assets/img/menu/choco-spanish.png";
+import milkCrunchy from "../assets/img/menu/milk-crunchy.png";
+import milkVancho from "../assets/img/menu/milk-vancho.png";
+import almondBubble from "../assets/img/menu/almond-bubble.png";
+import whiteGermanNuts from "../assets/img/menu/white-german-nuts.png";
+import whiteGermanNutsChocoChip from "../assets/img/menu/white-german-nuts-choco-chip.png";
+import redVelvet from "../assets/img/menu/red-velvet.png";
+import whiteTruffle from "../assets/img/menu/white-truffle.png";
+import redBee from "../assets/img/menu/red-bee.png";
+import freshFruitCake from "../assets/img/menu/fresh-fruit-cake.png";
+import rainbow from "../assets/img/menu/rainbow.png";
 
 /*=============== PRODUCT DATA ===============*/
-export const categories = [
-  "Strawberry",
-  "Vanilla",
-  "Chocolate",
-  "Dried fruit",
-  "Others",
-];
+/* Menu tabs, in display order */
+export const categories = ["Chocolate", "Nuts", "Classic", "Fruit & Fun"];
 
+/* `zoom` (optional): shows a photo larger on the menu card when the cake
+   looks small in its frame. Prices are in Indian rupees. */
 export const products = [
-  // Strawberry
-  {
-    id: "strawberry-1",
-    name: "Strawberry Shortcake",
-    description: "Layers of light sponge, fresh strawberries and whipped vanilla cream.",
-    price: 9.99,
-    category: "Strawberry",
-    image: strawberry1,
-  },
-  {
-    id: "strawberry-2",
-    name: "Fresh Strawberry Cream",
-    description: "Pink strawberry glaze over soft sponge and silky strawberry cream.",
-    price: 11.99,
-    category: "Strawberry",
-    image: strawberry2,
-  },
-  {
-    id: "strawberry-3",
-    name: "Strawberry Delight Cake",
-    description: "Strawberry mousse layers with chocolate curls and fresh berries.",
-    price: 12.99,
-    category: "Strawberry",
-    image: strawberry3,
-  },
-
-  // Vanilla
-  {
-    id: "vanilla-1",
-    name: "Classic Vanilla Bean Cake",
-    description: "Madagascar vanilla sponge with smooth vanilla bean buttercream.",
-    price: 15.99,
-    category: "Vanilla",
-    image: vanilla1,
-  },
-  {
-    id: "vanilla-2",
-    name: "Vanilla Buttercream Cake",
-    description: "Buttery vanilla layers finished with a rich, creamy frosting.",
-    price: 13.99,
-    category: "Vanilla",
-    image: vanilla2,
-  },
-  {
-    id: "vanilla-3",
-    name: "Soft Vanilla Sponge Cake",
-    description: "A light, airy vanilla sponge that melts in your mouth.",
-    price: 10.99,
-    category: "Vanilla",
-    image: vanilla3,
-  },
-
   // Chocolate
   {
-    id: "chocolate-1",
-    name: "Chocolate Fudge Cake",
-    description: "Dense chocolate cake smothered in a glossy fudge ganache.",
-    price: 17.99,
+    id: "belgium-chocolate",
+    name: "Belgium Chocolate",
+    description: "Glossy Belgian chocolate glaze with white chocolate curls and a crunchy nut-coated side.",
+    price: 1200,
     category: "Chocolate",
-    image: chocolate1,
+    image: belgiumChocolate,
   },
   {
-    id: "chocolate-2",
-    name: "Dark Chocolate Velvet Cake",
-    description: "Velvety dark chocolate layers with bittersweet cocoa cream.",
-    price: 18.99,
+    id: "choco-caramel",
+    name: "Choco Caramel",
+    description: "Rich dark chocolate cake with a golden caramel top and chocolate pearls.",
+    price: 1000,
     category: "Chocolate",
-    image: chocolate2,
+    image: chocoCaramel,
   },
   {
-    id: "chocolate-3",
-    name: "Triple Chocolate Cake",
-    description: "Milk, dark and white chocolate in one decadent cake.",
-    price: 20.99,
+    id: "choco-spanish",
+    name: "Choco Spanish",
+    description: "Caramel and white cream stripes over a crunchy chocolate-nut side.",
+    price: 1200,
     category: "Chocolate",
-    image: chocolate3,
+    image: chocoSpanish,
+  },
+  {
+    id: "milk-crunchy",
+    name: "Milk Crunchy",
+    description: "Milk chocolate glaze with a white chocolate drizzle and a crunchy nut coating.",
+    price: 1100,
+    category: "Chocolate",
+    image: milkCrunchy,
+  },
+  {
+    id: "milk-vancho",
+    name: "Milk Vancho",
+    description: "Milk chocolate web design with chocolate petals and a piped cream base.",
+    price: 1000,
+    category: "Chocolate",
+    image: milkVancho,
   },
 
-  // Dried Fruit
+  // Nuts
   {
-    id: "dried-fruit-1",
-    name: "Peanut And Banana Cake",
-    description: "Moist banana cake topped with caramel and toasted peanuts.",
-    price: 19.99,
-    category: "Dried fruit",
-    image: driedFruit1,
+    id: "almond-bubble",
+    name: "Almond Bubble",
+    description: "Cocoa-dusted cream topped with almond bubbles and toasted almond sides.",
+    price: 1100,
+    category: "Nuts",
+    image: almondBubble,
   },
   {
-    id: "dried-fruit-2",
-    name: "Filled Walnut Cake",
-    description: "Walnut sponge filled with honey cream and crunchy nuts.",
-    price: 14.99,
-    category: "Dried fruit",
-    image: driedFruit2,
+    id: "white-german-nuts",
+    name: "White German Nuts",
+    description: "White cream with chocolate swirls, wrapped in toasted almond flakes.",
+    price: 1100,
+    category: "Nuts",
+    image: whiteGermanNuts,
   },
   {
-    id: "dried-fruit-3",
-    name: "Glazed Pecan Cake",
-    description: "Caramel-glazed cake crowned with toasted pecans.",
-    price: 17.99,
-    category: "Dried fruit",
-    image: driedFruit3,
+    id: "white-german-nuts-choco-chip",
+    name: "White German Nuts Choco Chip",
+    description: "White chocolate cream with chocolate chips and crunchy nuts around the side.",
+    price: 1100,
+    category: "Nuts",
+    image: whiteGermanNutsChocoChip,
   },
 
-  // Others
+  // Classic
   {
-    id: "others-1",
-    name: "Chocolate Brownie",
-    description: "Fudgy chocolate brownie with a crackly, shiny top.",
-    price: 7.99,
-    category: "Others",
-    image: others1,
+    id: "red-velvet",
+    name: "Red Velvet",
+    description: "Classic red velvet sponge with smooth white cream and red velvet crumbs.",
+    price: 950,
+    category: "Classic",
+    image: redVelvet,
   },
   {
-    id: "others-2",
-    name: "Cream Cupcake",
-    description: "Soft vanilla cupcake swirled with light buttercream.",
-    price: 9.99,
-    category: "Others",
-    image: others2,
+    id: "white-truffle",
+    name: "White Truffle",
+    description: "Smooth white truffle cream with chocolate art and white chocolate pearls.",
+    price: 950,
+    category: "Classic",
+    image: whiteTruffle,
   },
   {
-    id: "others-3",
-    name: "Lemon Cake",
-    description: "Zesty lemon sponge with a sweet citrus glaze.",
-    price: 11.99,
-    category: "Others",
-    image: others3,
+    id: "red-bee",
+    name: "Red Bee",
+    description: "White cream cake with a bright red glaze drizzle and chocolate fans.",
+    price: 1100,
+    category: "Classic",
+    image: redBee,
+    zoom: 1.2, // wide photo - looks small in the square card frame
+  },
+
+  // Fruit & Fun
+  {
+    id: "fresh-fruit-cake",
+    name: "Fresh Fruit Cake",
+    description: "Cream cake crowned with fresh kiwi, strawberries, mango and berries.",
+    price: 1300,
+    category: "Fruit & Fun",
+    image: freshFruitCake,
+  },
+  {
+    id: "rainbow",
+    name: "Rainbow",
+    description: "Rainbow sprinkle top with soft vanilla cream and colourful sides.",
+    price: 1300,
+    category: "Fruit & Fun",
+    image: rainbow,
+    zoom: 1.15, // tall topper makes the cake itself look small
   },
 ];
 

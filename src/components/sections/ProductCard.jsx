@@ -16,7 +16,11 @@ const ProductCard = ({ product, onQuickView }) => {
         aria-label={`Quick view ${product.name}`}
         onClick={() => onQuickView(product)}
       >
-        <img src={product.image} alt={product.name} />
+        <img
+          src={product.image}
+          alt={product.name}
+          style={product.zoom ? { "--zoom": product.zoom } : undefined}
+        />
       </button>
 
       <h3 className="menu_card-name">{product.name}</h3>

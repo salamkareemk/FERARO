@@ -47,6 +47,13 @@ export const outlets = [
     mapLink: "https://maps.app.goo.gl/s21mWXAwp65UZ25u6",
     coords: "12.5887144,75.0735679",
   },
+  {
+    id: "kanhangad",
+    name: "Feraro Kanhangad",
+    address: ["Kanhangad, Kasaragod,", "Kerala"],
+    mapLink: "https://maps.google.com/?q=12.331918,75.081642",
+    coords: "12.331918,75.081642",
+  },
 ].map((outlet) => ({ ...outlet, mapEmbed: mapEmbed(outlet.coords) }));
 
 /* "View All" - every Feraro outlet on Google Maps */

@@ -112,6 +112,12 @@ const orderSection = {
   gallery: (rows) => [...rows].sort(newestFirst),
 };
 
+/* Display zoom for built-in products (see products.js). Looked up by
+   builtin_key, so it still applies after the import into Supabase. */
+const zoomByKey = new Map(
+  products.filter((product) => product.zoom).map((product) => [`products:${product.id}`, product.zoom]),
+);
+
 /*=============== ROW -> ITEM ===============*/
 /* One item shape for every section, used by the website and the dashboard */
 const toItem = (row) => ({
@@ -128,6 +134,7 @@ const toItem = (row) => ({
   occasion: row.occasion,
   shape: CAKE_SHAPES.includes(row.shape) ? row.shape : "square",
   image: row.image_url,
+  zoom: zoomByKey.get(row.builtin_key) ?? null,
 });
 
 /* `includeBuiltins`: add the bundled cakes (before the import, or when

@@ -3140,6 +3140,7 @@ html {
   width: clamp(120px, 19vh, 170px);
   aspect-ratio: 1;
   object-fit: contain;
+  scale: var(--zoom, 1); /* per-product zoom, see products.js */
   transition: transform 0.4s;
 }
 
@@ -3872,11 +3873,11 @@ html {
   }
 }
 
-/* Desktop: all five in one row, no swiping */
+/* Desktop: all six in one row, no swiping */
 @media screen and (width >= 1150px) {
   .outlets_list {
     grid-auto-flow: row;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: clamp(1rem, 1.5vw, 1.5rem);
     overflow: visible;
   }
@@ -4081,198 +4082,335 @@ html {
   }
 }
 
-/*=============== CHOCOLATE DRIP NAVBAR ===============*/
+/*=============== NAVBAR ===============*/
+/* Desktop: logo left · links centred · cart right.
+   Phones/tablets: logo left · cart + menu button right · slide-in menu.
+   (Overrides the earlier HEADER & NAV rules above.) */
 .header {
   --choco: #3a1c16;
-  --choco-dark: #2c140f;
+  --choco-dark: #241009;
   --cream: #fbf3e6;
-  /* Drips keep the 1440:170 proportions of their drawing */
-  --drip-h: calc(100vw * 170 / 1440);
+  --gold: #e8b84a;
+  --gold-soft: hsla(42, 78%, 60%, 0.16);
+  --nav-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
-  background: linear-gradient(to bottom, var(--choco-dark), var(--choco));
-}
-
-.header,
-.scroll-header {
-  background: linear-gradient(to bottom, var(--choco-dark), var(--choco));
+  isolation: isolate;
+  background: none;
   box-shadow: none;
+  transition: transform 0.45s var(--nav-ease);
 }
 
-/* Hidden header must also lift the drips hanging below it */
-.header.hide-header {
-  transform: translateY(calc(-100% - var(--drip-h)));
-}
-
-.nav_drips {
+/* Background on its own layer: a blur on .header itself would trap the
+   fixed mobile menu inside the header box */
+.header::before {
+  content: "";
   position: absolute;
-  top: calc(100% - 1px);
-  left: 0;
-  width: 100%;
-  height: var(--drip-h);
-  pointer-events: none;
-  transform-origin: top;
-  filter: drop-shadow(0 6px 6px hsla(10, 50%, 8%, 0.35));
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to bottom, var(--choco-dark), var(--choco));
+  border-bottom: 1px solid hsla(42, 70%, 60%, 0.14);
+  transition:
+    background 0.4s,
+    box-shadow 0.4s;
 }
 
-.nav_drips-shine {
-  fill: hsla(20, 60%, 85%, 0.35);
+/* Scrolled: a little translucent with a soft shadow */
+.scroll-header {
+  background: none;
 }
 
-/* Once the page scrolls, drips shrink so they don't cover content */
-.scroll-header .nav_drips {
-  transform: scaleY(0.4);
+.scroll-header::before {
+  background: linear-gradient(to bottom, hsla(13, 60%, 9%, 0.9), hsla(10, 44%, 16%, 0.9));
+  backdrop-filter: blur(12px) saturate(140%);
+  box-shadow: 0 10px 30px -12px hsla(10, 60%, 4%, 0.6);
 }
 
-.scroll-header .nav_drips-shine {
-  opacity: 0;
+.header.hide-header {
+  transform: translateY(-100%);
 }
 
-/* Logo + tagline */
+/* Logo */
 .nav_logo {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  row-gap: 0.1rem;
-  line-height: 1;
+  align-items: center;
+  flex-shrink: 0;
+  margin-right: auto;
+  border-radius: 0.5rem;
 }
 
-.nav_logo .nav_logo-name {
-  color: var(--cream);
-  font-family: "Abril Fatface", Georgia, serif;
-  font-weight: var(--font-regular);
-  font-size: 1.5rem;
-  letter-spacing: 0.08em;
+.nav_logo .nav_logo-img {
+  width: auto;
+  height: 2.1rem;
+  filter: drop-shadow(0 1px 2px hsla(0, 0%, 0%, 0.4));
+  transition:
+    height 0.35s var(--nav-ease),
+    transform 0.35s var(--nav-ease);
 }
 
-.nav_logo .nav_logo-tagline {
-  color: hsla(35, 60%, 90%, 0.75);
-  font-family: "Lato", sans-serif;
-  text-transform: none;
-  font-size: 0.62rem;
-  font-weight: var(--font-bold);
-  letter-spacing: 0.04em;
+.nav_logo:hover .nav_logo-img {
+  transform: scale(1.04);
 }
 
 /* Links */
 .nav_link {
   position: relative;
-  padding-block: 0.3rem;
-  color: var(--cream);
+  display: inline-block;
+  padding-block: 0.35rem;
+  color: hsla(36, 70%, 95%, 0.82);
   font-family: "Lato", sans-serif;
   font-size: 0.95rem;
   font-weight: var(--font-bold);
+  letter-spacing: 0.03em;
   text-transform: none;
-  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: color 0.3s;
 }
 
+/* Gold underline that grows from the centre */
 .nav_link::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: -0.1rem;
-  width: 100%;
+  right: 0;
+  bottom: -0.15rem;
   height: 2px;
-  background-color: var(--cream);
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
   transform: scaleX(0);
-  transition: transform 0.3s;
+  transition: transform 0.35s var(--nav-ease);
 }
 
 .nav_link:hover {
   color: var(--cream);
 }
 
-.nav_link:hover::after,
-.active-link::after {
+.nav_link:hover::after {
+  transform: scaleX(0.7);
+}
+
+.nav_link.active-link {
+  color: var(--gold);
+}
+
+.nav_link.active-link::after {
   transform: scaleX(1);
+  background: var(--gold);
 }
 
-.active-link {
-  color: var(--cream);
+/* Right-hand actions: cart (+ menu button on small screens) */
+.nav_actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
-.nav_toggle,
-.nav_close,
-.cart_button {
+.cart_button,
+.nav_toggle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  margin: 0;
+  border: 1px solid hsla(42, 70%, 60%, 0.28);
+  border-radius: 50% !important;
   color: var(--cream);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s,
+    color 0.3s,
+    transform 0.3s var(--nav-ease);
+}
+
+.cart_button:hover,
+.nav_toggle:hover {
+  background-color: var(--gold-soft);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.cart_button:active,
+.nav_toggle:active {
+  transform: scale(0.94);
 }
 
 .cart_count {
-  background-color: #c89a6a;
+  top: -0.3rem;
+  right: -0.3rem;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 999px;
+  background-color: var(--gold);
   color: var(--choco-dark);
+  font-size: 0.65rem;
+  box-shadow: 0 0 0 2px var(--choco-dark);
 }
 
-/* Mobile / tablet: logo left, cart + menu button right, slide-in menu */
+/* Keyboard focus */
+.nav_logo:focus-visible,
+.nav_link:focus-visible,
+.cart_button:focus-visible,
+.nav_toggle:focus-visible,
+.nav_close:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+
+/* Tap-outside backdrop for the mobile menu */
+.nav_backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-fixed) - 1);
+  background-color: hsla(10, 50%, 5%, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.35s,
+    visibility 0.35s;
+}
+
+.nav_backdrop.show-backdrop {
+  opacity: 1;
+  visibility: visible;
+}
+
+/*=============== NAVBAR - PHONES & TABLETS ===============*/
 @media screen and (width < 1150px) {
   .nav {
-    column-gap: 1.25rem;
-  }
-
-  .nav_logo {
-    margin-right: auto;
+    column-gap: 1rem;
   }
 
   .nav_menu {
-    background: linear-gradient(to bottom, var(--choco-dark), var(--choco));
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(82%, 340px);
+    height: 100dvh;
+    padding: 6.5rem 2rem 2rem;
+    background: linear-gradient(160deg, var(--choco-dark), var(--choco));
+    border-left: 1px solid hsla(42, 70%, 60%, 0.14);
+    box-shadow: -18px 0 40px -10px hsla(10, 60%, 4%, 0.6);
+    transform: translateX(105%);
+    transition: transform 0.45s var(--nav-ease);
+    overflow-y: auto;
   }
 
-  .nav_list-right {
-    margin-top: 2.5rem;
+  .nav_menu.show-menu {
+    right: 0;
+    transform: none;
+  }
+
+  .nav_list {
+    row-gap: 0;
+  }
+
+  .nav_list li {
+    border-bottom: 1px solid hsla(36, 60%, 90%, 0.08);
   }
 
   .nav_link {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding-block: 1rem;
     font-size: 1.1rem;
+  }
+
+  /* Mobile: a gold bar on the left instead of an underline */
+  .nav_link::after {
+    top: 50%;
+    bottom: auto;
+    left: -2rem;
+    right: auto;
+    width: 3px;
+    height: 1.4rem;
+    background: var(--gold);
+    transform: translateY(-50%) scaleY(0);
+  }
+
+  .nav_link:hover::after {
+    transform: translateY(-50%) scaleY(0.6);
+  }
+
+  .nav_link.active-link::after {
+    transform: translateY(-50%) scaleY(1);
+  }
+
+  .nav_close {
+    top: 1.25rem;
+    right: 1.25rem;
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border: 1px solid hsla(42, 70%, 60%, 0.28);
+    border-radius: 50% !important;
+    color: var(--cream);
+    font-size: 1.2rem;
+    transition:
+      background-color 0.3s,
+      color 0.3s;
+  }
+
+  .nav_close:hover {
+    background-color: var(--gold-soft);
+    color: var(--gold);
   }
 }
 
-/* Desktop: links split either side of a centred logo */
+/*=============== NAVBAR - DESKTOP ===============*/
 @media screen and (width >= 1150px) {
+  /* Equal side columns keep the links exactly centred on the page */
   .nav {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    column-gap: clamp(1.5rem, 3vw, 3rem);
-  }
-
-  .nav_menu {
-    display: contents;
-  }
-
-  .nav_list {
-    column-gap: clamp(1.25rem, 2.4vw, 2.75rem);
-  }
-
-  .nav_list-left {
-    grid-column: 1;
-    grid-row: 1;
-    justify-self: end;
+    column-gap: 2rem;
   }
 
   .nav_logo {
-    grid-column: 2;
-    grid-row: 1;
-    align-items: center;
-  }
-
-  .nav_logo .nav_logo-name {
-    font-size: 1.9rem;
-  }
-
-  .nav_logo .nav_logo-tagline {
-    font-size: 0.7rem;
-  }
-
-  .nav_list-right {
-    grid-column: 3;
-    grid-row: 1;
     justify-self: start;
+    margin-right: 0;
   }
 
-  .cart_button {
-    grid-column: 3;
-    grid-row: 1;
+  .nav_logo .nav_logo-img {
+    height: 2.6rem;
+  }
+
+  .scroll-header .nav_logo .nav_logo-img {
+    height: 2.3rem;
+  }
+
+  .nav_menu {
+    display: block;
+  }
+
+  .nav_list {
+    flex-direction: row;
+    align-items: center;
+    column-gap: clamp(1.25rem, 2.2vw, 2.4rem);
+  }
+
+  .nav_actions {
     justify-self: end;
-    margin-left: 0;
+  }
+
+  .nav_toggle,
+  .nav_close,
+  .nav_backdrop {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .header::before,
+  .nav_menu,
+  .nav_link::after,
+  .nav_logo .nav_logo-img {
+    transition: none;
   }
 }
 

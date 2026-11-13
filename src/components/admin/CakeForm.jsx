@@ -194,13 +194,13 @@ const CakeForm = ({ section, item, presetOccasion, takenOccasions = [], onClose,
 
             <div className="admin_row">
               <label className="admin_field">
-                <span>Price ($)</span>
+                <span>Price (₹)</span>
                 <input
                   type="number"
                   inputMode="decimal"
                   min="0"
                   max={LIMITS.price}
-                  step="0.01"
+                  step="1"
                   value={fields.price}
                   onChange={update("price")}
                   required

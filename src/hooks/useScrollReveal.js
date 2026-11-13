@@ -57,6 +57,22 @@ export const useScrollReveal = (pageKey) => {
 
     reveals.forEach(([selector, options]) => sr.reveal(selector, options));
 
-    return () => sr.destroy();
+    /* The page grows after it loads (cakes arrive from the database, images
+       load). ScrollReveal and GSAP ScrollTrigger only re-measure on window
+       resize, so without this, elements further down (e.g. the footer) can
+       stay hidden. Nudge them - once, after the size settles. */
+    let timer;
+    const observer = new ResizeObserver(() => {
+      clearTimeout(timer);
+      timer = setTimeout(() => window.dispatchEvent(new Event("resize")), 150);
+    });
+
+    observer.observe(document.body);
+
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+      sr.destroy();
+    };
   }, [pageKey]);
 };
