@@ -15,7 +15,6 @@ const navLinks = [
   { id: "home", label: "Home" },
   { id: "about", label: "About Us" },
   { id: "product", label: "Products" },
-  { id: "new", label: "New" },
   { id: "custom", label: "Custom" },
   { id: "outlets", label: "Outlets" },
   { id: "contact", label: "Contact" },

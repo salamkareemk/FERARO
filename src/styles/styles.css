@@ -3470,6 +3470,7 @@ html {
   --menu-ink: #2b1b19;
   --menu-text: #6f6a67;
   --menu-font: "Lato", sans-serif;
+  --gallery-gold: #a8834f;
 
   min-height: 100svh;
   padding-block: calc(var(--header-height) + 2rem) 5rem;
@@ -3497,30 +3498,109 @@ html {
   text-decoration: underline;
 }
 
+/* Header */
 .gallery_header {
+  display: grid;
+  justify-items: center;
+  max-width: 560px;
+  margin: 0 auto clamp(1.75rem, 4vh, 2.5rem);
   text-align: center;
-  margin-bottom: 1.5rem;
+}
+
+.gallery_eyebrow {
+  margin-bottom: 0.5rem;
+  color: var(--gallery-gold);
+  font-family: var(--menu-font);
+  font-size: 0.75rem;
+  font-weight: var(--font-bold);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
 }
 
 .gallery_title {
   color: var(--menu-brown);
   font-family: "Abril Fatface", Georgia, serif;
-  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: var(--font-regular);
+  line-height: 1.05;
   text-transform: none;
   letter-spacing: 0;
-  margin-bottom: 0.5rem;
+}
+
+/* Gold rule with a cake icon in the middle */
+.gallery_divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-block: 0.9rem 1rem;
+  color: var(--gallery-gold);
+  font-size: 1.1rem;
+}
+
+.gallery_divider::before,
+.gallery_divider::after {
+  content: "";
+  width: 3rem;
+  height: 1px;
+  background: linear-gradient(to var(--side, right), transparent, var(--gallery-gold));
+}
+
+.gallery_divider::after {
+  --side: left;
 }
 
 .gallery_subtitle {
   color: var(--menu-text);
   font-family: var(--menu-font);
   font-size: 1.05rem;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
+/* Filter tabs with photo counts */
 .gallery_tabs {
   margin-bottom: 1rem;
+}
+
+.gallery_tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.gallery_tab-count {
+  min-width: 1.5rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px !important;
+  background-color: hsla(4, 45%, 20%, 0.08);
+  font-size: 0.72rem;
+  font-weight: var(--font-bold);
+  line-height: 1.4;
+  transition: background-color 0.3s;
+}
+
+.gallery_tab.active .gallery_tab-count {
+  background-color: hsla(0, 0%, 100%, 0.2);
+}
+
+/* Phones: one swipeable row of tabs instead of several wrapped rows */
+@media screen and (width < 768px) {
+  .gallery_tabs {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    margin-inline: -1rem;
+    padding: 0.25rem 1rem;
+    scrollbar-width: none;
+  }
+
+  .gallery_tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .gallery_tab {
+    flex-shrink: 0;
+  }
 }
 
 .gallery_count {
@@ -3531,96 +3611,158 @@ html {
   text-align: center;
 }
 
-/* Masonry with CSS columns: tiles stack down each column at their own height */
+.gallery_empty {
+  padding-block: 4rem;
+  color: var(--menu-text);
+  font-family: var(--menu-font);
+  text-align: center;
+}
+
+/* Bento grid: small row units, each shape spans enough of them to keep its
+   proportions; "dense" back-fills gaps so the grid stays tidy */
 .gallery_grid {
-  column-count: 2;
-  column-gap: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 105px;
+  grid-auto-flow: dense;
+  gap: 0.75rem;
 }
 
 @media screen and (width >= 768px) {
   .gallery_grid {
-    column-count: 3;
-    column-gap: 1rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: 125px;
+    gap: 1.25rem;
   }
 }
 
 @media screen and (width >= 1150px) {
   .gallery_grid {
-    column-count: 4;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: 135px;
+    gap: 1.5rem;
   }
 }
 
-.gallery_tile {
-  position: relative;
-  display: block;
-  width: 100%;
-  margin-bottom: 0.75rem;
-  break-inside: avoid;
-  overflow: hidden;
-  border-radius: 1rem !important;
-  background-color: #eee9e2;
-  cursor: zoom-in;
+.gallery_card-square {
+  grid-row: span 2;
+}
+
+.gallery_card-tall {
+  grid-row: span 3;
+}
+
+.gallery_card-wide {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.gallery_card-featured {
+  grid-column: span 2;
+  grid-row: span 3;
 }
 
 @media screen and (width >= 768px) {
-  .gallery_tile {
-    margin-bottom: 1rem;
+  .gallery_card-featured {
+    grid-row: span 4;
   }
 }
 
-.gallery_tile:nth-child(4n + 2) {
-  background-color: #f3e3d3;
+/* Card */
+.gallery_card {
+  --tile: #f3e3d3;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 1.25rem !important;
+  background: radial-gradient(circle at 50% 40%, #fffdfa 0%, var(--tile) 75%);
+  box-shadow:
+    0 1px 2px hsla(4, 45%, 20%, 0.06),
+    0 10px 28px -14px hsla(4, 45%, 20%, 0.28);
+  text-align: left;
+  cursor: zoom-in;
+  animation: gallery-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--delay, 0ms);
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s;
 }
 
-.gallery_tile:nth-child(4n + 3) {
-  background-color: #e4ddd4;
+.gallery_card:nth-child(4n + 2) {
+  --tile: #ecdfd2;
 }
 
-.gallery_tile:nth-child(4n + 4) {
-  background-color: #f6ede3;
+.gallery_card:nth-child(4n + 3) {
+  --tile: #f6e8dc;
 }
 
-/* Tile proportions follow the photo; squares alternate for a livelier grid */
-.gallery_tile-wide {
-  aspect-ratio: 4 / 3;
+.gallery_card:nth-child(4n + 4) {
+  --tile: #e9e1d7;
 }
 
-.gallery_tile-tall {
-  aspect-ratio: 3 / 4;
+.gallery_card-featured {
+  --tile: #efd9c6;
 }
 
-.gallery_tile-square {
-  aspect-ratio: 1 / 1;
+@keyframes gallery-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
 }
 
-.gallery_tile-square:nth-child(3n + 1) {
-  aspect-ratio: 4 / 5;
+.gallery_card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 2px 4px hsla(4, 45%, 20%, 0.06),
+    0 22px 40px -18px hsla(4, 45%, 20%, 0.4);
 }
 
-.gallery_tile img {
+.gallery_card:focus-visible {
+  outline: 2px solid var(--menu-brown);
+  outline-offset: 3px;
+}
+
+/* Photo area fills the card above the caption */
+.gallery_media {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.gallery_media img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  padding: 10% 10% 22%;
+  /* Fixed padding: % would follow the width and shrink wide cards' photos */
+  padding: 1.1rem 1rem 0.25rem;
   object-fit: contain;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  filter: drop-shadow(0 14px 12px hsla(4, 45%, 20%, 0.18));
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.gallery_tile:hover img {
+.gallery_card:hover .gallery_media img {
   transform: scale(1.06);
 }
 
-.gallery_caption {
-  position: absolute;
-  left: 0.6rem;
-  right: 0.6rem;
-  bottom: 0.6rem;
+/* Caption */
+.gallery_info {
   display: grid;
-  padding: 0.45rem 0.75rem;
-  background-color: hsla(0, 0%, 100%, 0.9);
-  border-radius: 0.75rem !important;
-  text-align: left;
+  gap: 0.15rem;
+  padding: 0.55rem 0.9rem 0.85rem;
+}
+
+.gallery_occasion {
+  color: var(--gallery-gold);
+  font-family: var(--menu-font);
+  font-size: 0.66rem;
+  font-weight: var(--font-bold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 /* Names wrap to a second line rather than being cut off */
@@ -3637,10 +3779,54 @@ html {
   line-height: 1.3;
 }
 
-.gallery_collection {
-  color: var(--menu-text);
-  font-family: var(--menu-font);
-  font-size: 0.72rem;
+.gallery_card-featured .gallery_info {
+  padding: 0.75rem 1.25rem 1.2rem;
+}
+
+.gallery_card-featured .gallery_name {
+  font-family: "Abril Fatface", Georgia, serif;
+  font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+  font-weight: var(--font-regular);
+}
+
+/* Zoom hint, shown on hover */
+.gallery_zoom {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50% !important;
+  background-color: hsla(0, 0%, 100%, 0.85);
+  color: var(--menu-brown);
+  font-size: 1.05rem;
+  opacity: 0;
+  transform: scale(0.8);
+  transition:
+    opacity 0.3s,
+    transform 0.3s;
+}
+
+.gallery_card:hover .gallery_zoom,
+.gallery_card:focus-visible .gallery_zoom {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery_card,
+  .gallery_media img,
+  .gallery_zoom {
+    animation: none;
+    transition: none;
+  }
+
+  .gallery_card:hover,
+  .gallery_card:hover .gallery_media img {
+    transform: none;
+  }
 }
 
 /*=============== GALLERY LIGHTBOX ===============*/
@@ -6048,173 +6234,6 @@ html {
 
   .ft_form button {
     padding-inline: 1.25rem;
-  }
-}
-
-/*=============== NEW CREATIONS (editorial strip, hover-to-grow) ===============*/
-.nc {
-  --nc-bg: #fbfaf8;
-  --nc-ink: #141414;
-  --nc-tile: #efedea;
-  --nc-accent: #a85a32;
-  /* Tile height at rest, and how much the hovered tile grows */
-  --tile-h: clamp(150px, 24vh, 250px);
-  --grow: 1.75;
-  --nc-ease: cubic-bezier(0.65, 0, 0.35, 1);
-
-  background-color: var(--nc-bg);
-  color: var(--nc-ink);
-}
-
-/* Sit a little higher than the vertically centred default: content starts
-   near the top with a moderate gap above the title */
-.nc.section {
-  justify-content: flex-start;
-  padding-top: clamp(5rem, 15vh, 10rem);
-}
-
-/* Header - big title */
-@media screen and (width >= 900px) {
-  .nc_header {
-    display: grid;
-    grid-template-columns: 1fr 3fr;
-  }
-
-  .nc_header > * {
-    grid-column: 2;
-  }
-}
-
-.nc_title {
-  overflow: hidden;
-  padding-bottom: 0.06em;
-  color: var(--nc-ink);
-  font-family: var(--second-font);
-  font-size: clamp(3rem, min(8.5vw, 13vh), 8rem);
-  font-weight: var(--font-medium);
-  line-height: 0.95;
-  letter-spacing: -0.045em;
-  text-transform: none;
-}
-
-.nc_title-inner {
-  display: inline-block;
-}
-
-/* Strip - tall enough for the enlarged tile. Tiles are positioned by the
-   engine in NewCreations.jsx (position, width and height every frame) */
-.nc_viewport {
-  position: relative;
-  height: calc(var(--tile-h) * var(--grow));
-  margin-top: clamp(1.5rem, 5vh, 3rem);
-  overflow: hidden;
-  cursor: grab;
-  user-select: none;
-  touch-action: pan-y; /* vertical page scroll still works on phones */
-}
-
-.nc_viewport:active {
-  cursor: grabbing;
-}
-
-.nc_track {
-  position: relative;
-  height: 100%;
-}
-
-/* Tiles sit on the bottom edge; size before the engine starts */
-.nc_tile {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: calc(var(--tile-h) * var(--w));
-  height: var(--tile-h);
-  will-change: transform, width, height;
-}
-
-.nc_tile-link {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: var(--nc-tile);
-}
-
-.nc_tile-link img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  padding: 10% 10% 16%;
-  object-fit: contain;
-  pointer-events: none;
-}
-
-.nc_tile-info {
-  position: absolute;
-  left: 0.75rem;
-  right: 0.75rem;
-  bottom: 0.65rem;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem;
-  color: var(--nc-ink);
-  font-family: "Lato", sans-serif;
-  font-size: 0.7rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  opacity: 0;
-  translate: 0 6px;
-  transition:
-    opacity 0.4s,
-    translate 0.4s;
-}
-
-/* The centre (active) tile shows its name and Order link */
-.nc_tile.is-active .nc_tile-info {
-  opacity: 1;
-  translate: 0 0;
-  transition-delay: 0.25s;
-}
-
-.nc_tile:not(.is-active) .nc_tile-link {
-  cursor: pointer;
-}
-
-.nc_tile-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.nc_tile-order {
-  flex-shrink: 0;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-/* Phones: name above the Order link so the full name fits */
-@media screen and (width < 540px) {
-  .nc_tile-info {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.3rem;
-  }
-
-  .nc_tile-name {
-    white-space: normal;
-  }
-
-  .nc_tile-link img {
-    padding-bottom: 24%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .nc_tile-info {
-    transition-duration: 0.01s;
   }
 }
 

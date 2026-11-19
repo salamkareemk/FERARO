@@ -5,6 +5,17 @@ import homeCake2 from "../assets/img/home-cake-2.png";
 import homeCake3 from "../assets/img/home-cake-3.png";
 import homeCake4 from "../assets/img/home-cake-4.png";
 
+import crownToppedRedVelvet from "../assets/img/gallery/crown-topped-red-velvet.webp";
+import mintGoldBoyOrGirl from "../assets/img/gallery/mint-gold-boy-or-girl.webp";
+import glossyBlackGold from "../assets/img/gallery/glossy-black-gold.webp";
+import justEngaged from "../assets/img/gallery/just-engaged.webp";
+import mintOmbreBirthday from "../assets/img/gallery/mint-ombre-birthday.webp";
+import momToBeBabyBooties from "../assets/img/gallery/mom-to-be-baby-booties.webp";
+import pastelMintEngagement from "../assets/img/gallery/pastel-mint-engagement.webp";
+import rainbowCar5thBirthday from "../assets/img/gallery/rainbow-car-5th-birthday.webp";
+import blueGoldCelebration from "../assets/img/gallery/blue-gold-celebration.webp";
+import spiderManBirthday from "../assets/img/gallery/spider-man-birthday.webp";
+
 /*=============== CAKE GALLERY ===============*/
 /* `shape` sets the tile proportions in the masonry grid:
    wide = landscape photo, tall = portrait photo, square = square photo
@@ -67,4 +78,23 @@ const interleave = (...lists) => {
   return result;
 };
 
-export const galleryItems = interleave(signature, menuCakes).map((item, index) => ({ ...item, id: `gallery-${index + 1}` }));
+/* Customised cake photos. They get their own id prefix so the ids of the
+   photos above stay the same. */
+const customised = [
+  { image: crownToppedRedVelvet, name: "Crown-Topped Red Velvet Birthday Cake", occasion: "Birthday", shape: "tall" },
+  { image: mintGoldBoyOrGirl, name: "Elegant Mint and Gold Boy or Girl Cake", occasion: "Baby Shower", shape: "tall" },
+  { image: glossyBlackGold, name: "Glossy Black Birthday Cake with Gold Accents", occasion: "Birthday", shape: "tall" },
+  { image: justEngaged, name: "Just Engaged Celebration Cake", occasion: "Engagement", shape: "tall" },
+  { image: mintOmbreBirthday, name: "Mint Ombre Birthday Cake", occasion: "Birthday", shape: "tall" },
+  { image: momToBeBabyBooties, name: "Mom-to-Be Baby Booties Cake", occasion: "Baby Shower", shape: "square" },
+  { image: pastelMintEngagement, name: "Pastel Mint Engagement Cake with Gold Topper", occasion: "Engagement", shape: "tall" },
+  { image: rainbowCar5thBirthday, name: "Rainbow Car-Themed 5th Birthday Cake", occasion: "Kids' Party", shape: "tall" },
+  { image: blueGoldCelebration, name: "Blue and Gold Celebration Cake", occasion: "Birthday", shape: "tall" },
+  { image: spiderManBirthday, name: "Spider-Man Birthday Cake", occasion: "Kids' Party", shape: "tall" },
+].map((item, index) => ({ ...item, id: `gallery-custom-${index + 1}` }));
+
+const classics = interleave(signature, menuCakes).map((item, index) => ({ ...item, id: `gallery-${index + 1}` }));
+
+/* Customised cakes lead, mixed in with the classics so the grid alternates
+   tall, wide and square tiles */
+export const galleryItems = interleave(customised, classics);

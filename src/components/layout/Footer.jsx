@@ -29,7 +29,6 @@ const columns = [
     links: [
       { label: "About Us", section: "about" },
       { label: "Our Cakes", section: "product" },
-      { label: "New Creations", section: "new" },
       { label: "Customized Cakes", section: "custom" },
       { label: "Cake Gallery", to: "/gallery" },
     ],

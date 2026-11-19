@@ -31,6 +31,15 @@ const GalleryPage = () => {
       ? allItems
       : allItems.filter((item) => item.occasion === occasion);
 
+  /* Photos per occasion - tabs with none are hidden (unless selected) */
+  const counts = allItems.reduce(
+    (totals, item) => ({ ...totals, [item.occasion]: (totals[item.occasion] ?? 0) + 1 }),
+    { All: allItems.length },
+  );
+  const visibleOccasions = galleryOccasions.filter(
+    (name) => name === "All" || name === occasion || counts[name],
+  );
+
   useEffect(() => {
     document.title = "Cake Gallery | FERARO";
 
@@ -49,7 +58,11 @@ const GalleryPage = () => {
         </Link>
 
         <header className="gallery_header">
+          <span className="gallery_eyebrow">Handcrafted at FERARO</span>
           <h1 className="gallery_title">Cake Gallery</h1>
+          <span className="gallery_divider" aria-hidden="true">
+            <i className="ri-cake-3-line"></i>
+          </span>
           <p className="gallery_subtitle">
             Every cake tells a story. Browse our favourite creations for
             every celebration.
@@ -58,45 +71,64 @@ const GalleryPage = () => {
 
         {/* Occasion filters */}
         <div className="menu_tabs gallery_tabs" role="tablist">
-          {galleryOccasions.map((name) => (
+          {visibleOccasions.map((name) => (
             <button
               key={name}
               type="button"
               role="tab"
               aria-selected={occasion === name}
-              className={`menu_tab ${occasion === name ? "active" : ""}`}
+              className={`menu_tab gallery_tab ${occasion === name ? "active" : ""}`}
               onClick={() => setOccasion(name)}
             >
               {name}
+              <span className="gallery_tab-count">{counts[name] ?? 0}</span>
             </button>
           ))}
         </div>
 
-        <p className="gallery_count">
+        <p className="gallery_count" aria-live="polite">
           {status === "loading"
             ? "Loading photos…"
-            : `${items.length} ${items.length === 1 ? "photo" : "photos"}`}
+            : `${items.length} ${items.length === 1 ? "creation" : "creations"}`}
         </p>
 
-        {/* Masonry - CSS columns, tile heights follow each photo's shape */}
-        <div className="gallery_grid">
-          {items.map((item, index) => (
-            <button
-              key={item.id}
-              type="button"
-              className={`gallery_tile gallery_tile-${item.shape}`}
-              onClick={() => setOpenIndex(index)}
-              aria-label={`View ${item.name}`}
-            >
-              <img src={item.image} alt={item.name} loading="lazy" />
+        {/* Bento grid - tile size follows each photo's shape, the first
+            photo is featured; re-keyed so tiles animate in on filter change */}
+        {items.length > 0 ? (
+          <div className="gallery_grid" key={occasion}>
+            {items.map((item, index) => (
+              <button
+                key={item.id}
+                type="button"
+                className={`gallery_card gallery_card-${item.shape} ${
+                  index === 0 ? "gallery_card-featured" : ""
+                }`}
+                style={{ "--delay": `${Math.min(index, 12) * 60}ms` }}
+                onClick={() => setOpenIndex(index)}
+                aria-label={`View ${item.name}`}
+              >
+                <span className="gallery_media">
+                  <img src={item.image} alt={item.name} loading="lazy" />
+                </span>
 
-              <span className="gallery_caption">
-                <span className="gallery_name">{item.name}</span>
-                <span className="gallery_collection">{item.occasion}</span>
-              </span>
-            </button>
-          ))}
-        </div>
+                <span className="gallery_info">
+                  <span className="gallery_occasion">{item.occasion}</span>
+                  <span className="gallery_name">{item.name}</span>
+                </span>
+
+                <span className="gallery_zoom" aria-hidden="true">
+                  <i className="ri-zoom-in-line"></i>
+                </span>
+              </button>
+            ))}
+          </div>
+        ) : (
+          status !== "loading" && (
+            <p className="gallery_empty">
+              No {occasion.toLowerCase()} cakes yet - check back soon.
+            </p>
+          )
+        )}
       </div>
 
       <Lightbox
