@@ -13,6 +13,7 @@ import GalleryPage from "./pages/GalleryPage.jsx";
 const AdminPage = lazy(() => import("./pages/AdminPage.jsx"));
 
 import CartDrawer from "./components/cart/CartDrawer.jsx";
+import FavoritesDrawer from "./components/cart/FavoritesDrawer.jsx";
 import QuickView from "./components/modals/QuickView.jsx";
 import Checkout from "./components/modals/Checkout.jsx";
 import OrderConfirmation from "./components/modals/OrderConfirmation.jsx";
@@ -33,6 +34,7 @@ const App = () => {
 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [isFavoritesOpen, setIsFavoritesOpen] = useState(false);
 
   /* Keep the last product / order so content stays visible while closing */
   const [quickViewProduct, setQuickViewProduct] = useState(null);
@@ -43,7 +45,11 @@ const App = () => {
 
   /* Lock page scroll while any overlay is open */
   const isOverlayOpen =
-    isCartOpen || isCheckoutOpen || isQuickViewOpen || isConfirmationOpen;
+    isCartOpen ||
+    isFavoritesOpen ||
+    isCheckoutOpen ||
+    isQuickViewOpen ||
+    isConfirmationOpen;
 
   useScrollReveal(pathname);
   useSmoothScroll(isOverlayOpen);
@@ -82,7 +88,9 @@ const App = () => {
 
   return (
     <>
-      {!isAdmin && <Header onCartOpen={() => setIsCartOpen(true)} />}
+      {!isAdmin && (
+        <Header onFavoritesOpen={() => setIsFavoritesOpen(true)} />
+      )}
 
       <ScrollManager />
 
@@ -106,6 +114,11 @@ const App = () => {
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         onCheckout={openCheckout}
+      />
+
+      <FavoritesDrawer
+        isOpen={isFavoritesOpen}
+        onClose={() => setIsFavoritesOpen(false)}
       />
 
       <ToastContainer />

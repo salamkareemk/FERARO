@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 
 import AdminModal from "./AdminModal.jsx";
@@ -316,7 +316,7 @@ const AdminDashboard = ({ user }) => {
 /*=============== ITEM CARD ===============*/
 const ItemCard = ({ item, position, canEdit, onEdit, onDelete }) => {
   const label = labelFor(item);
-  const lockedHint = "Import the built-in cakes first to change this one";
+  const lockedHint = "Unlocks in a moment, once setup finishes";
 
   return (
     <li className="admin_item">
@@ -360,11 +360,15 @@ const ItemCard = ({ item, position, canEdit, onEdit, onDelete }) => {
   );
 };
 
-/*=============== IMPORT BUILT-IN CAKES ===============*/
+/*=============== IMPORT BUILT-IN CAKES (automatic) ===============*/
+/* Runs by itself the first time the dashboard opens: copies the cakes that
+   ship with the website into the database so every cake can be edited.
+   Only shows a banner while it works, or if it fails (with a retry). */
 const ImportBanner = ({ onDone }) => {
   const { showToast } = useToast();
   const [progress, setProgress] = useState(null); // { done, total } while importing
   const [error, setError] = useState("");
+  const hasStarted = useRef(false);
 
   const isImporting = progress !== null;
 
@@ -374,25 +378,33 @@ const ImportBanner = ({ onDone }) => {
 
     try {
       await importBuiltins((done, total) => setProgress({ done, total }));
-      showToast("Import complete", "Every cake on the website can now be edited or removed.");
+      showToast("All cakes editable", "Every cake on the website can now be edited or removed.");
       await onDone();
     } catch (importError) {
-      setError(`${importError.message} Cakes already copied are kept - run the import again to finish.`);
+      setError(`${importError.message} Cakes already copied are kept - press Try again to finish.`);
     } finally {
       setProgress(null);
     }
   };
 
+  /* Start once (the ref stops React's dev double-mount running it twice) */
+  useEffect(() => {
+    if (hasStarted.current) return;
+
+    hasStarted.current = true;
+    runImport();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <div className="admin_banner" role="region" aria-label="Import built-in cakes">
+    <div className="admin_banner" role="status" aria-label="Preparing cakes for editing">
       <i className="ri-download-cloud-2-line admin_banner-icon" aria-hidden="true"></i>
 
       <div className="admin_banner-text">
-        <h2>Make the built-in cakes editable</h2>
+        <h2>{error ? "Couldn't finish setting up" : "Making every cake editable…"}</h2>
         <p>
-          {BUILTIN_COUNT} cakes marked <strong>Built-in</strong> are part of the website's code, so
-          they can't be changed here yet. Import them once to copy their photos and details into
-          your database. After that, every cake can be edited or removed.
+          The cakes that came with the website are being copied into your database, once. Please
+          keep this page open - Edit and Remove unlock on every cake when it's done.
         </p>
 
         {isImporting && (
@@ -408,9 +420,17 @@ const ImportBanner = ({ onDone }) => {
         )}
       </div>
 
-      <button type="button" className="admin_button" onClick={runImport} disabled={isImporting}>
-        {isImporting ? `Importing ${progress.done}/${progress.total}…` : "Import built-in cakes"}
-      </button>
+      {isImporting ? (
+        <span className="admin_button" aria-hidden="true">
+          {progress.done}/{progress.total}
+        </span>
+      ) : (
+        error && (
+          <button type="button" className="admin_button" onClick={runImport}>
+            Try again
+          </button>
+        )
+      )}
     </div>
   );
 };

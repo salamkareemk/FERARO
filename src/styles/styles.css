@@ -6383,3 +6383,68 @@ html {
     padding-bottom: 2rem;
   }
 }
+
+/*=============== FAVOURITES ===============*/
+/* Heart toggle on product cards */
+.menu_card-favorite {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50% !important;
+  background-color: var(--white-color);
+  color: var(--menu-brown, #4a1f1c);
+  font-size: 1.15rem;
+  box-shadow: 0 4px 12px hsla(4, 45%, 20%, 0.15);
+  cursor: pointer;
+  transition:
+    transform 0.25s,
+    color 0.25s;
+}
+
+.menu_card-favorite:hover {
+  transform: scale(1.1);
+}
+
+.menu_card-favorite.is-favorite {
+  color: #e0245e;
+}
+
+.menu_card-favorite.is-favorite i {
+  animation: favorite-pop 0.35s ease;
+}
+
+.menu_card-favorite:focus-visible {
+  outline: 2px solid var(--menu-brown, #4a1f1c);
+  outline-offset: 2px;
+}
+
+@keyframes favorite-pop {
+  50% {
+    transform: scale(1.3);
+  }
+}
+
+/* Favourites drawer */
+.cart_drawer .cart_remove .ri-heart-fill {
+  color: #e0245e;
+}
+
+.favorite_buy {
+  padding: 0.4rem 1.1rem;
+  border-radius: 999px !important;
+  background-color: #4a1f1c;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.3s;
+}
+
+.favorite_buy:hover {
+  filter: brightness(1.15);
+}

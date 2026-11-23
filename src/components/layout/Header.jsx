@@ -3,7 +3,7 @@ import { useLocation } from "react-router";
 
 import SectionLink from "./SectionLink.jsx";
 
-import { useCart } from "../../context/CartContext.jsx";
+import { useFavorites } from "../../context/FavoritesContext.jsx";
 import { useActiveSection } from "../../hooks/useActiveSection.js";
 import { useHideOnScroll } from "../../hooks/useHideOnScroll.js";
 import { useScrolledPast } from "../../hooks/useScrolledPast.js";
@@ -23,8 +23,8 @@ const navLinks = [
 /*=============== HEADER & NAV ===============*/
 /* Desktop: logo left, links centred, cart right.
    Phones / tablets: logo left, cart + menu button right, slide-in menu. */
-const Header = ({ onCartOpen }) => {
-  const { totalItems } = useCart();
+const Header = ({ onFavoritesOpen }) => {
+  const { favorites } = useFavorites();
   const isScrolled = useScrolledPast(50);
   const { pathname } = useLocation();
   const isHome = pathname === "/";
@@ -98,18 +98,19 @@ const Header = ({ onCartOpen }) => {
         </div>
 
         <div className="nav_actions">
-          {/* Cart */}
+          {/* Favourites */}
           <button
             className="cart_button"
             type="button"
-            aria-label={`Open shopping cart (${totalItems} items)`}
-            onClick={onCartOpen}
+            aria-label={`Open favourites (${favorites.length} items)`}
+            onClick={onFavoritesOpen}
           >
-            <i className="ri-shopping-bag-3-line"></i>
-            {/* Re-keying replays the bump animation when the count changes */}
-            <span className="cart_count bump" key={totalItems} aria-hidden="true">
-              {totalItems}
-            </span>
+            <i className="ri-heart-line"></i>
+            {favorites.length > 0 && (
+              <span className="cart_count bump" key={favorites.length} aria-hidden="true">
+                {favorites.length}
+              </span>
+            )}
           </button>
 
           {/* Toggle (mobile menu) */}

@@ -1,6 +1,7 @@
 /*=============== LOCAL STORAGE KEYS ===============*/
 export const STORAGE_KEYS = {
   cart: "delizia-cart",
+  favorites: "feraro-favorites",
   lastOrder: "delizia-last-order",
   orders: "delizia-orders",
 };

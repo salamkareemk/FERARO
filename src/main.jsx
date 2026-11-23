@@ -12,6 +12,7 @@ import "./styles/styles.css";
 import { ToastProvider } from "./context/ToastContext.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
 import { CakesProvider } from "./context/CakesContext.jsx";
+import { FavoritesProvider } from "./context/FavoritesContext.jsx";
 import App from "./App.jsx";
 import { locateNearestBranch } from "./utils/whatsapp.js";
 
@@ -24,7 +25,9 @@ createRoot(document.getElementById("root")).render(
       <ToastProvider>
         <CakesProvider>
           <CartProvider>
-            <App />
+            <FavoritesProvider>
+              <App />
+            </FavoritesProvider>
           </CartProvider>
         </CakesProvider>
       </ToastProvider>
