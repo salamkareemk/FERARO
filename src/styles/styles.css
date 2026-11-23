@@ -3748,21 +3748,24 @@ html {
   z-index: 1;
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50% !important;
-  background-color: #25d366;
+  min-width: 64px;
+  height: 38px;
+  padding-inline: 1.1rem;
+  border-radius: 999px !important;
+  background-color: var(--menu-brown);
   color: #fff;
-  font-size: 1.3rem;
-  box-shadow: 0 6px 16px -6px hsla(142, 70%, 30%, 0.6);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  box-shadow: 0 6px 16px -6px hsla(4, 45%, 20%, 0.6);
   transition:
     transform 0.3s,
-    background-color 0.3s;
+    filter 0.3s;
 }
 
 .gallery_whatsapp:hover {
-  background-color: #1ebe5a;
-  transform: scale(1.08);
+  filter: brightness(1.15);
+  transform: scale(1.06);
 }
 
 .gallery_whatsapp:focus-visible {
@@ -3770,9 +3773,9 @@ html {
   outline-offset: 2px;
 }
 
-/* Keep long names clear of the WhatsApp button */
+/* Keep long names clear of the Buy button */
 .gallery_info {
-  padding-right: 3.5rem !important;
+  padding-right: 5.5rem !important;
 }
 
 /* Photo area fills the card above the caption */

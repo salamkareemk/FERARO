@@ -136,10 +136,10 @@ const GalleryPage = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="gallery_whatsapp"
-                  aria-label={`Order ${item.name} on WhatsApp`}
-                  title="Order on WhatsApp"
+                  aria-label={`Buy ${item.name} on WhatsApp`}
+                  title="Buy on WhatsApp"
                 >
-                  <i className="ri-whatsapp-line"></i>
+                  Buy
                 </a>
               </div>
             ))}
