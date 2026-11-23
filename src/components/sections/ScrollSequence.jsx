@@ -1,13 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 
 /*=============== IMAGE SEQUENCE CONFIG ===============*/
-const FRAME_COUNT = 169;
+/* 1080p frames: landscape (1920x1080) for desktop, portrait (1080x1920) for phones */
+const SEQUENCES = {
+  desktop: { folder: "desktop", count: 120 },
+  mobile: { folder: "mobile", count: 94 },
+};
 const EASING = 0.12; // 0-1, lower = slower & smoother frame changes
-const MAX_CANVAS_WIDTH = 1920; // source frames are 1280px wide - no point going higher
+const MAX_CANVAS_WIDTH = 1920; // source frames are 1080p - no point going higher
 const LOAD_CONCURRENCY = 6;
 
-const framePath = (index) =>
-  `/sequence/frame-${String(index + 1).padStart(3, "0")}.webp`;
+const pickSequence = () =>
+  window.matchMedia("(orientation: portrait) and (max-width: 768px)").matches
+    ? SEQUENCES.mobile
+    : SEQUENCES.desktop;
+
+const framePath = (folder, index) =>
+  `/sequence/${folder}/frame-${String(index + 1).padStart(3, "0")}.webp`;
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
@@ -55,6 +64,7 @@ const ScrollSequence = () => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d", { alpha: false });
 
+    const { folder, count: FRAME_COUNT } = pickSequence();
     const frames = new Array(FRAME_COUNT).fill(null);
     let isActive = true;
     let loadedCount = 0;
@@ -133,7 +143,7 @@ const ScrollSequence = () => {
         const index = nextIndex++;
 
         try {
-          frames[index] = await loadFrame(framePath(index));
+          frames[index] = await loadFrame(framePath(folder, index));
         } catch {
           // Skip a frame that fails - neighbours are used instead
         }
@@ -142,7 +152,7 @@ const ScrollSequence = () => {
 
         loadedCount += 1;
 
-        /* Update the loading label in 5% steps, not 169 re-renders */
+        /* Update the loading label in 5% steps, not one re-render per frame */
         setLoadedPercent(Math.floor((loadedCount / FRAME_COUNT) * 20) * 5);
 
         if (drawnFrame === -1 || index === Math.round(currentFrame)) {
@@ -182,7 +192,7 @@ const ScrollSequence = () => {
 
         {/* Intro text - fades out as the story starts */}
         <div className="sequence_intro container">
-          <span className="sequence_subtitle">FERARO Bakery</span>
+          <span className="sequence_subtitle">FERARO CAKES</span>
           <h2 className="sequence_title">
             Every Cake <br />
             Starts From Scratch

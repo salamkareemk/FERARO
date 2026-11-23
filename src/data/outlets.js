@@ -2,6 +2,9 @@
 /* `mapLink`: the outlet's Google Maps link (opens directions)
    `coords`: exact pin location (lat,lng) for the small map preview -
              coordinates always pin the right spot, address searches don't
+   `whatsapp`: this branch's WhatsApp number (country code + number, digits
+               only). Visitors nearest this branch chat with it; `null` = use
+               the default number in utils/whatsapp.js
    `image`: optional storefront photo - when set, it replaces the map preview
             (e.g. import cheruvathurPhoto from "../assets/img/outlet-cheruvathur.jpg") */
 
@@ -15,6 +18,7 @@ export const outlets = [
     address: ["NH Cheruvathur, near E Planet,", "Cheruvathur, Kerala 671313"],
     mapLink: "https://maps.app.goo.gl/y1PnTREi8xdgQiYZ8",
     coords: "12.2142903,75.1625697",
+    whatsapp: "917736616616",
   },
   {
     id: "uppala",
@@ -22,6 +26,7 @@ export const outlets = [
     address: ["NH Uppala,", "Uppala, Kerala 671322"],
     mapLink: "https://maps.app.goo.gl/GpHwaVvHmR799Wa98",
     coords: "12.6749238,74.9086992",
+    whatsapp: "919851617617",
   },
   {
     id: "trikaripur",
@@ -32,6 +37,7 @@ export const outlets = [
     ],
     mapLink: "https://maps.app.goo.gl/JNpWvKDpFxQHbH2h9",
     coords: "12.138948,75.1770044",
+    whatsapp: "917736888616",
   },
   {
     id: "mulleria",
@@ -39,6 +45,7 @@ export const outlets = [
     address: ["Feraro Ice Creams & Pastries,", "Mulleria, Kerala 671543"],
     mapLink: "https://maps.app.goo.gl/Gf2huU1WhJjdJo2Z7",
     coords: "12.5513204,75.1640361",
+    whatsapp: null, // e.g. "919876543210" - digits only, with country code
   },
   {
     id: "badiadka",
@@ -46,6 +53,7 @@ export const outlets = [
     address: ["Cherkala - Kalladka Rd,", "Badiyadka, Kerala 671551"],
     mapLink: "https://maps.app.goo.gl/s21mWXAwp65UZ25u6",
     coords: "12.5887144,75.0735679",
+    whatsapp: null, // e.g. "919876543210" - digits only, with country code
   },
   {
     id: "kanhangad",
@@ -53,6 +61,7 @@ export const outlets = [
     address: ["Kanhangad, Kasaragod,", "Kerala"],
     mapLink: "https://maps.google.com/?q=12.331918,75.081642",
     coords: "12.331918,75.081642",
+    whatsapp: null, // e.g. "919876543210" - digits only, with country code
   },
 ].map((outlet) => ({ ...outlet, mapEmbed: mapEmbed(outlet.coords) }));
 

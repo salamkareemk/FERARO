@@ -56,12 +56,9 @@ const Home = () => {
               Order a Custom Cake
             </WetPaintButton>
 
-            <WetPaintButton
-              href="#product"
-              className="home_button home_button-outline"
-            >
+            <a href="#product" className="home_button home_button-outline">
               View Menu
-            </WetPaintButton>
+            </a>
           </div>
 
           {/* Slider controls - drive the cake slider on the right */}

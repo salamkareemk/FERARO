@@ -4,6 +4,10 @@ import { Link, useSearchParams } from "react-router";
 import { galleryOccasions } from "../data/gallery.js";
 import { useCakes } from "../context/CakesContext.jsx";
 import { useScrollLock } from "../hooks/useSmoothScroll.js";
+import {
+  buildWhatsAppEnquiryLink,
+  useWhatsAppBranch,
+} from "../utils/whatsapp.js";
 
 /*=============== GALLERY PAGE ===============*/
 const GalleryPage = () => {
@@ -13,6 +17,9 @@ const GalleryPage = () => {
   const requested = searchParams.get("occasion");
   const occasion = galleryOccasions.includes(requested) ? requested : "All";
   const [openIndex, setOpenIndex] = useState(null);
+
+  /* Re-render WhatsApp links when the nearest branch is found */
+  useWhatsAppBranch();
 
   /* Newest first - everything the admin dashboard manages */
   const { sections, status } = useCakes();
@@ -97,29 +104,44 @@ const GalleryPage = () => {
         {items.length > 0 ? (
           <div className="gallery_grid" key={occasion}>
             {items.map((item, index) => (
-              <button
+              <div
                 key={item.id}
-                type="button"
                 className={`gallery_card gallery_card-${item.shape} ${
                   index === 0 ? "gallery_card-featured" : ""
                 }`}
                 style={{ "--delay": `${Math.min(index, 12) * 60}ms` }}
-                onClick={() => setOpenIndex(index)}
-                aria-label={`View ${item.name}`}
               >
-                <span className="gallery_media">
-                  <img src={item.image} alt={item.name} loading="lazy" />
-                </span>
+                <button
+                  type="button"
+                  className="gallery_open"
+                  onClick={() => setOpenIndex(index)}
+                  aria-label={`View ${item.name}`}
+                >
+                  <span className="gallery_media">
+                    <img src={item.image} alt={item.name} loading="lazy" />
+                  </span>
 
-                <span className="gallery_info">
-                  <span className="gallery_occasion">{item.occasion}</span>
-                  <span className="gallery_name">{item.name}</span>
-                </span>
+                  <span className="gallery_info">
+                    <span className="gallery_occasion">{item.occasion}</span>
+                    <span className="gallery_name">{item.name}</span>
+                  </span>
 
-                <span className="gallery_zoom" aria-hidden="true">
-                  <i className="ri-zoom-in-line"></i>
-                </span>
-              </button>
+                  <span className="gallery_zoom" aria-hidden="true">
+                    <i className="ri-zoom-in-line"></i>
+                  </span>
+                </button>
+
+                <a
+                  href={buildWhatsAppEnquiryLink(item)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="gallery_whatsapp"
+                  aria-label={`Order ${item.name} on WhatsApp`}
+                  title="Order on WhatsApp"
+                >
+                  <i className="ri-whatsapp-line"></i>
+                </a>
+              </div>
             ))}
           </div>
         ) : (
@@ -146,6 +168,8 @@ const Lightbox = ({ items, index, onChange, onClose }) => {
   const isOpen = index !== null;
   const item = isOpen ? items[index] : null;
   const closeRef = useRef(null);
+
+  useWhatsAppBranch();
 
   useScrollLock(isOpen);
 
@@ -201,10 +225,22 @@ const Lightbox = ({ items, index, onChange, onClose }) => {
         <img src={item.image} alt={item.name} />
 
         <figcaption className="lightbox_caption">
-          <strong>{item.name}</strong>
-          <span>
-            {item.occasion} &middot; {index + 1} / {items.length}
-          </span>
+          <div className="lightbox_text">
+            <strong>{item.name}</strong>
+            <span>
+              {item.occasion} &middot; {index + 1} / {items.length}
+            </span>
+          </div>
+
+          <a
+            href={buildWhatsAppEnquiryLink(item)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="lightbox_whatsapp"
+          >
+            <i className="ri-whatsapp-line"></i>
+            Order on WhatsApp
+          </a>
         </figcaption>
       </figure>
 

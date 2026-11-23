@@ -1,13 +1,10 @@
 import { getProductById } from "../../data/products.js";
 import { formatPrice } from "../../utils/format.js";
-import { WHATSAPP_NUMBER } from "../../utils/whatsapp.js";
-
-/* Shown as +91 62827 99461 */
-const PHONE_DISPLAY = `+${WHATSAPP_NUMBER.slice(0, 2)} ${WHATSAPP_NUMBER.slice(2, 7)} ${WHATSAPP_NUMBER.slice(7)}`;
-
-const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-  "Hello Feraro! I'd like to order a custom cake.",
-)}`;
+import {
+  formatPhone,
+  useWhatsAppBranch,
+  whatsappLink,
+} from "../../utils/whatsapp.js";
 
 /* Cakes shown inside the phone mockups */
 const menuCakes = ["red-velvet", "choco-caramel", "fresh-fruit-cake", "rainbow"].map(
@@ -17,6 +14,9 @@ const featuredCake = getProductById("belgium-chocolate");
 
 /*=============== ORDER / CONTACT SECTION ===============*/
 const Contact = () => {
+  /* Nearest branch's number once location is known, default until then */
+  const { number, outlet } = useWhatsAppBranch();
+
   return (
     <section className="order section" id="contact">
       <div className="order_container container">
@@ -36,7 +36,10 @@ const Contact = () => {
 
           <div className="order_buttons">
             <a
-              href={WHATSAPP_LINK}
+              href={whatsappLink(
+                "Hello Feraro! I'd like to order a custom cake.",
+                number,
+              )}
               target="_blank"
               rel="noopener noreferrer"
               className="order_button"
@@ -48,14 +51,21 @@ const Contact = () => {
               </span>
             </a>
 
-            <a href={`tel:+${WHATSAPP_NUMBER}`} className="order_button">
+            <a href={`tel:+${number}`} className="order_button">
               <i className="ri-phone-line order_button-icon"></i>
               <span className="order_button-text">
                 <small>Call us</small>
-                {PHONE_DISPLAY}
+                {formatPhone(number)}
               </span>
             </a>
           </div>
+
+          {outlet && (
+            <p className="order_branch" aria-live="polite">
+              <i className="ri-navigation-line"></i>
+              Connected to your nearest outlet: <strong>{outlet.name}</strong>
+            </p>
+          )}
 
           <a href="#outlets" className="order_outlets-link">
             <i className="ri-map-pin-2-line"></i>

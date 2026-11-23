@@ -3,27 +3,27 @@ import { Link } from "react-router";
 
 import SectionLink from "./SectionLink.jsx";
 import { outlets } from "../../data/outlets.js";
-import { WHATSAPP_NUMBER } from "../../utils/whatsapp.js";
+import {
+  formatPhone,
+  useWhatsAppBranch,
+  whatsappLink,
+} from "../../utils/whatsapp.js";
 
-const whatsappLink = (message) =>
-  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-
-const PHONE_DISPLAY = `+${WHATSAPP_NUMBER.slice(0, 2)} ${WHATSAPP_NUMBER.slice(2, 7)} ${WHATSAPP_NUMBER.slice(7)}`;
-
-/* Round icons under the signup box.
+/* Round icons under the signup box - built per render so they use the
+   nearest branch's number.
    To add your pages: { href: "https://instagram.com/yourpage", label: "Instagram", icon: "ri-instagram-line" } */
-const socialLinks = [
+const getSocialLinks = (number) => [
   {
-    href: whatsappLink("Hello Feraro!"),
+    href: whatsappLink("Hello Feraro!", number),
     label: "WhatsApp",
     icon: "ri-whatsapp-line",
   },
-  { href: `tel:+${WHATSAPP_NUMBER}`, label: "Call us", icon: "ri-phone-line" },
+  { href: `tel:+${number}`, label: "Call us", icon: "ri-phone-line" },
 ];
 
 /* Link columns - `section` scrolls to a homepage section, `to` is a page,
    `href` is an outside link */
-const columns = [
+const getColumns = (number) => [
   {
     title: "Explore",
     links: [
@@ -45,10 +45,10 @@ const columns = [
     links: [
       {
         label: "Order on WhatsApp",
-        href: whatsappLink("Hello Feraro! I'd like to order a cake."),
+        href: whatsappLink("Hello Feraro! I'd like to order a cake.", number),
         highlight: true,
       },
-      { label: PHONE_DISPLAY, href: `tel:+${WHATSAPP_NUMBER}` },
+      { label: formatPhone(number), href: `tel:+${number}` },
     ],
   },
 ];
@@ -59,6 +59,9 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const Footer = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const { number } = useWhatsAppBranch();
+  const socialLinks = getSocialLinks(number);
+  const columns = getColumns(number);
 
   /* No email service is connected, so signing up sends the address to the
      shop on WhatsApp. Swap this for a mailing-list service when you have one. */
@@ -74,6 +77,7 @@ const Footer = () => {
     window.open(
       whatsappLink(
         `Hi Feraro! Please add me to your updates list.\nEmail: ${email.trim()}`,
+        number,
       ),
       "_blank",
       "noopener,noreferrer",
