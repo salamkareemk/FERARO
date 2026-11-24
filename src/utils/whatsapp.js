@@ -118,21 +118,20 @@ export const locateNearestBranch = () => {
 };
 
 /*=============== WHATSAPP MESSAGES ===============*/
-export const buildWhatsAppOrderLink = (product, quantity = 1) => {
-  const message = [
+const orderMessage = (product, quantity = 1) =>
+  [
     `Hello! I'd like to buy this cake:`,
     ``,
     `*${product.name}*`,
     `Quantity: ${quantity}`,
-    `Price: ${formatPrice(product.price * quantity)}`,
-  ].join("\n");
-
-  return whatsappLink(message);
-};
+    product.price != null ? `Price: ${formatPrice(product.price * quantity)}` : null,
+  ]
+    .filter((line) => line !== null)
+    .join("\n");
 
 /* Gallery cakes have no fixed price - ask about the selected design instead */
-export const buildWhatsAppEnquiryLink = (cake) => {
-  const message = [
+const enquiryMessage = (cake) =>
+  [
     `Hello! I'd like to order this cake from your gallery:`,
     ``,
     `*${cake.name}*`,
@@ -141,13 +140,44 @@ export const buildWhatsAppEnquiryLink = (cake) => {
     .filter((line) => line !== null)
     .join("\n");
 
-  return whatsappLink(message);
+/*=============== OUTLET PICKER ===============*/
+/* Every Buy button asks the customer which outlet to order from first.
+   The picker (components/modals/OutletPicker.jsx) reads this request. */
+let pickerRequest = null; // { cake, message } | null
+const pickerListeners = new Set();
+
+const setPickerRequest = (next) => {
+  pickerRequest = next;
+  pickerListeners.forEach((listener) => listener());
 };
 
-export const openWhatsAppOrder = (product, quantity = 1) => {
-  window.open(
-    buildWhatsAppOrderLink(product, quantity),
-    "_blank",
-    "noopener,noreferrer",
+export const useOutletPicker = () =>
+  useSyncExternalStore(
+    (listener) => {
+      pickerListeners.add(listener);
+      return () => pickerListeners.delete(listener);
+    },
+    () => pickerRequest,
+    () => pickerRequest,
   );
+
+export const closeOutletPicker = () => setPickerRequest(null);
+
+/* Opens WhatsApp for the chosen outlet, naming it in the message */
+export const orderFromOutlet = (outlet) => {
+  if (!pickerRequest) return;
+
+  const number = outlet.whatsapp ?? DEFAULT_WHATSAPP_NUMBER;
+  const message = `${pickerRequest.message}\n\nOutlet: ${outlet.name}`;
+
+  window.open(whatsappLink(message, number), "_blank", "noopener,noreferrer");
+  closeOutletPicker();
 };
+
+/* Product cards, quick view, favourites */
+export const openWhatsAppOrder = (product, quantity = 1) =>
+  setPickerRequest({ cake: product, message: orderMessage(product, quantity) });
+
+/* Gallery cards and lightbox */
+export const openWhatsAppEnquiry = (cake) =>
+  setPickerRequest({ cake, message: enquiryMessage(cake) });

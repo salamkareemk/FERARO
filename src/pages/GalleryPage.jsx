@@ -4,10 +4,7 @@ import { Link, useSearchParams } from "react-router";
 import { galleryOccasions } from "../data/gallery.js";
 import { useCakes } from "../context/CakesContext.jsx";
 import { useScrollLock } from "../hooks/useSmoothScroll.js";
-import {
-  buildWhatsAppEnquiryLink,
-  useWhatsAppBranch,
-} from "../utils/whatsapp.js";
+import { openWhatsAppEnquiry } from "../utils/whatsapp.js";
 
 /*=============== GALLERY PAGE ===============*/
 const GalleryPage = () => {
@@ -17,9 +14,6 @@ const GalleryPage = () => {
   const requested = searchParams.get("occasion");
   const occasion = galleryOccasions.includes(requested) ? requested : "All";
   const [openIndex, setOpenIndex] = useState(null);
-
-  /* Re-render WhatsApp links when the nearest branch is found */
-  useWhatsAppBranch();
 
   /* Newest first - everything the admin dashboard manages */
   const { sections, status } = useCakes();
@@ -131,16 +125,14 @@ const GalleryPage = () => {
                   </span>
                 </button>
 
-                <a
-                  href={buildWhatsAppEnquiryLink(item)}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  type="button"
                   className="gallery_whatsapp"
-                  aria-label={`Buy ${item.name} on WhatsApp`}
-                  title="Buy on WhatsApp"
+                  aria-label={`Buy ${item.name}`}
+                  onClick={() => openWhatsAppEnquiry(item)}
                 >
                   Buy
-                </a>
+                </button>
               </div>
             ))}
           </div>
@@ -168,8 +160,6 @@ const Lightbox = ({ items, index, onChange, onClose }) => {
   const isOpen = index !== null;
   const item = isOpen ? items[index] : null;
   const closeRef = useRef(null);
-
-  useWhatsAppBranch();
 
   useScrollLock(isOpen);
 
@@ -232,15 +222,16 @@ const Lightbox = ({ items, index, onChange, onClose }) => {
             </span>
           </div>
 
-          <a
-            href={buildWhatsAppEnquiryLink(item)}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            type="button"
             className="lightbox_whatsapp"
+            onClick={() => {
+              openWhatsAppEnquiry(item);
+              onClose();
+            }}
           >
-            <i className="ri-whatsapp-line"></i>
-            Order on WhatsApp
-          </a>
+            Buy
+          </button>
         </figcaption>
       </figure>
 

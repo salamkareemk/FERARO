@@ -14,10 +14,6 @@ import { CartProvider } from "./context/CartContext.jsx";
 import { CakesProvider } from "./context/CakesContext.jsx";
 import { FavoritesProvider } from "./context/FavoritesContext.jsx";
 import App from "./App.jsx";
-import { locateNearestBranch } from "./utils/whatsapp.js";
-
-/* Ask for location once on load so WhatsApp buttons point to the nearest branch */
-locateNearestBranch();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

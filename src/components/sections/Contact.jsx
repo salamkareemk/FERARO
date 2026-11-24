@@ -1,7 +1,10 @@
+import { useEffect, useRef } from "react";
+
 import { getProductById } from "../../data/products.js";
 import { formatPrice } from "../../utils/format.js";
 import {
   formatPhone,
+  locateNearestBranch,
   useWhatsAppBranch,
   whatsappLink,
 } from "../../utils/whatsapp.js";
@@ -16,9 +19,34 @@ const featuredCake = getProductById("belgium-chocolate");
 const Contact = () => {
   /* Nearest branch's number once location is known, default until then */
   const { number, outlet } = useWhatsAppBranch();
+  const sectionRef = useRef(null);
+
+  /* Location is only asked for here - when the visitor reaches this section */
+  useEffect(() => {
+    const section = sectionRef.current;
+
+    if (!section || !("IntersectionObserver" in window)) {
+      locateNearestBranch();
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+
+        locateNearestBranch();
+        observer.disconnect();
+      },
+      { threshold: 0.25 },
+    );
+
+    observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section className="order section" id="contact">
+    <section className="order section" id="contact" ref={sectionRef}>
       <div className="order_container container">
         {/* Text + buttons */}
         <div className="order_content">

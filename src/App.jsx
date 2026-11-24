@@ -17,6 +17,7 @@ import FavoritesDrawer from "./components/cart/FavoritesDrawer.jsx";
 import QuickView from "./components/modals/QuickView.jsx";
 import Checkout from "./components/modals/Checkout.jsx";
 import OrderConfirmation from "./components/modals/OrderConfirmation.jsx";
+import OutletPicker from "./components/modals/OutletPicker.jsx";
 
 import ToastContainer from "./components/ui/ToastContainer.jsx";
 import Confetti from "./components/ui/Confetti.jsx";
@@ -120,6 +121,8 @@ const App = () => {
         isOpen={isFavoritesOpen}
         onClose={() => setIsFavoritesOpen(false)}
       />
+
+      <OutletPicker />
 
       <ToastContainer />
 

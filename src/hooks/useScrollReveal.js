@@ -40,8 +40,9 @@ const reveals = [
   [`.order_outlets-link`, { delay: 650 }],
   [`.order_visual`, { delay: 400, origin: "right", distance: "80px" }],
 
-  [`.ft_top`, {}],
-  [`.ft_brand`, { delay: 200, distance: "80px" }],
+  /* No reveal on the footer: it sits at the very bottom, where ScrollReveal's
+     measurements go stale as the page above changes height (cakes loading,
+     the contact section updating) - it could stay hidden forever. */
 ];
 
 /* Re-runs when the page changes so the new page gets its animations */
