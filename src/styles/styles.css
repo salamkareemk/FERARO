@@ -304,9 +304,12 @@ img {
   top: -2rem;
 }
 
+/* slice-2 and sticker-1 stay inside the screen edge: they're hidden (see
+   "Hide playful decorations") but still take up layout, and past the edge
+   they made the page wider than phones, leaving a gap on the right */
 .home_slice-2 {
   width: 80px;
-  right: -2rem;
+  right: 0.5rem;
   bottom: -2.5rem;
   filter: blur(2px);
 }
@@ -320,7 +323,7 @@ img {
 .home_sticker-1 {
   width: 30px;
   top: 2.5rem;
-  right: -0.5rem;
+  right: 0.5rem;
 }
 
 .home_sticker-2 {
@@ -5479,7 +5482,9 @@ html {
   --order-red-glow: hsla(350, 100%, 60%, 0.55);
   --order-text: hsla(0, 0%, 100%, 0.74);
 
-  overflow: clip;
+  /* hidden, not clip: on phones Chrome still counted the phone visual's
+     slide-in offset (80px right) past a clip, widening the whole page */
+  overflow: hidden;
   background:
     radial-gradient(circle at 78% 55%, hsla(350, 100%, 60%, 0.16), transparent 55%),
     radial-gradient(circle at 10% 0%, hsla(30, 40%, 40%, 0.12), transparent 45%),
