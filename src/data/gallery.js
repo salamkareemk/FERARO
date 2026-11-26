@@ -10,7 +10,7 @@ import mintGoldBoyOrGirl from "../assets/img/gallery/mint-gold-boy-or-girl.webp"
 import glossyBlackGold from "../assets/img/gallery/glossy-black-gold.webp";
 import justEngaged from "../assets/img/gallery/just-engaged.webp";
 import mintOmbreBirthday from "../assets/img/gallery/mint-ombre-birthday.webp";
-import momToBeBabyBooties from "../assets/img/gallery/mom-to-be-baby-booties.webp";
+import momToBeCakeWithBooties from "../assets/img/gallery/mom-to-be-cake-with-booties.png";
 import pastelMintEngagement from "../assets/img/gallery/pastel-mint-engagement.webp";
 import rainbowCar5thBirthday from "../assets/img/gallery/rainbow-car-5th-birthday.webp";
 import blueGoldCelebration from "../assets/img/gallery/blue-gold-celebration.webp";
@@ -86,7 +86,7 @@ const customised = [
   { image: glossyBlackGold, name: "Glossy Black Birthday Cake with Gold Accents", occasion: "Birthday", shape: "tall" },
   { image: justEngaged, name: "Just Engaged Celebration Cake", occasion: "Engagement", shape: "tall" },
   { image: mintOmbreBirthday, name: "Mint Ombre Birthday Cake", occasion: "Birthday", shape: "tall" },
-  { image: momToBeBabyBooties, name: "Mom-to-Be Baby Booties Cake", occasion: "Baby Shower", shape: "square" },
+  { image: momToBeCakeWithBooties, name: "Mom To Be Cake with Booties", occasion: "Baby Shower", shape: "square" },
   { image: pastelMintEngagement, name: "Pastel Mint Engagement Cake with Gold Topper", occasion: "Engagement", shape: "tall" },
   { image: rainbowCar5thBirthday, name: "Rainbow Car-Themed 5th Birthday Cake", occasion: "Kids' Party", shape: "tall" },
   { image: blueGoldCelebration, name: "Blue and Gold Celebration Cake", occasion: "Birthday", shape: "tall" },
