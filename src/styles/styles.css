@@ -2695,6 +2695,14 @@ html {
   background-color: var(--dark-color);
 }
 
+/* Phones (same check as the JS that picks the portrait frames): swipes travel
+   further than wheel flicks, so 1.5 screens still finishes in 2-3 swipes */
+@media (orientation: portrait) and (max-width: 768px) {
+  .sequence {
+    height: 250vh;
+  }
+}
+
 .sequence_sticky {
   position: sticky;
   top: 0;
@@ -6311,6 +6319,7 @@ html {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
+  margin-left: auto; /* stays on the right */
   color: var(--ft-ink);
   font-weight: var(--font-bold);
 }

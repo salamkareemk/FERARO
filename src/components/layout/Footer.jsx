@@ -166,7 +166,6 @@ const Footer = () => {
         </SectionLink>
 
         <div className="ft_bottom">
-          <small>&#169; All Rights Reserved By Azeem Toretto</small>
           <SectionLink id="home" className="ft_back">
             Back to top
             <i className="ri-arrow-up-line"></i>
