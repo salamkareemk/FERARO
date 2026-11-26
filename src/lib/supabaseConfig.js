@@ -13,7 +13,6 @@ export const SETTINGS_TABLE = "site_settings";
 /* Sections the admin can add photos to */
 export const CAKE_SECTIONS = {
   products: "Products",
-  new: "New Creations",
   custom: "Customized Cakes",
   gallery: "Cake Gallery",
 };

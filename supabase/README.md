@@ -1,8 +1,8 @@
 # Admin dashboard setup (Supabase)
 
 The admin dashboard lives at **`/admin`** (e.g. `http://localhost:5173/admin`).
-It lets a signed-in admin upload cake photos to four sections:
-Products, New Creations, Customized Cakes and the Cake Gallery.
+It lets a signed-in admin upload cake photos to three sections:
+Products, Customized Cakes and the Cake Gallery.
 The site keeps its built-in cakes and shows the uploaded ones with them.
 
 ## One-time setup
@@ -50,7 +50,6 @@ The site keeps its built-in cakes and shows the uploaded ones with them.
 | Section          | Fields                                    | On the website                         |
 | ---------------- | ----------------------------------------- | -------------------------------------- |
 | Products         | photo, name, description, price, category | Card in "Your Indulgence", Buy button  |
-| New Creations    | photo, name                               | Slide in the New Creations strip       |
 | Customized Cakes | photo, occasion                           | One photo per occasion tile            |
 | Cake Gallery     | photo, name, occasion, tile shape         | Newest first under its occasion filter |
 

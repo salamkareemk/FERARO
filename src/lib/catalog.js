@@ -1,5 +1,4 @@
 import { categories, products } from "../data/products.js";
-import { newCreations } from "../data/newCreations.js";
 import { customCakes } from "../data/customCakes.js";
 import { galleryItems, galleryOccasions } from "../data/gallery.js";
 
@@ -11,7 +10,7 @@ import { galleryItems, galleryOccasions } from "../data/gallery.js";
    After the import (site_settings.catalog_imported_at is set), Supabase is the
    only source, so every cake can be edited or removed from the dashboard. */
 
-export const SECTION_KEYS = ["products", "new", "custom", "gallery"];
+export const SECTION_KEYS = ["products", "custom", "gallery"];
 
 export const CAKE_SHAPES = ["square", "wide", "tall"];
 export const PRODUCT_CATEGORIES = categories;
@@ -20,7 +19,7 @@ export const CUSTOM_OCCASIONS = customCakes.map((cake) => cake.occasion);
 
 /*=============== BUILT-IN CAKES AS DATABASE ROWS ===============*/
 /* Fixed timestamps in the past keep the built-in cakes in their original order
-   and place them before (products, new) or after (gallery) newer uploads. */
+   and place them before (products) or after (gallery) newer uploads. */
 const BASE_TIME = Date.UTC(2000, 0, 1);
 const stamp = (seconds) => new Date(BASE_TIME + seconds * 1000).toISOString();
 
@@ -44,14 +43,6 @@ export const builtinRows = [
     price: product.price,
     category: product.category,
     image: product.image,
-    created_at: stamp(index),
-  })),
-  ...newCreations.map((cake, index) => ({
-    ...emptyRow,
-    builtin_key: `new:${index + 1}`,
-    section: "new",
-    name: cake.name,
-    image: cake.image,
     created_at: stamp(index),
   })),
   ...customCakes.map((cake, index) => ({
@@ -107,7 +98,6 @@ const orderCustom = (rows) => {
 
 const orderSection = {
   products: (rows) => [...rows].sort(oldestFirst),
-  new: (rows) => [...rows].sort(oldestFirst),
   custom: orderCustom,
   gallery: (rows) => [...rows].sort(newestFirst),
 };

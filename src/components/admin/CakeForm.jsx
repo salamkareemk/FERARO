@@ -38,8 +38,6 @@ const fieldsFor = (section, fields) => {
         price: fields.price === "" ? NaN : Number(fields.price),
         category: fields.category,
       };
-    case "new":
-      return { name: fields.name.trim() };
     case "custom":
       return { occasion: fields.occasion };
     default:

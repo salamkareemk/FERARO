@@ -19,7 +19,6 @@ import { formatPrice } from "../../utils/format.js";
 
 const sectionNotes = {
   products: "Cards in “Your Indulgence”, in the order shown on the website, each with a Buy button.",
-  new: "Slides in the “New Creations” strip.",
   custom: "One photo per occasion tile. A tile without a photo is hidden on the website.",
   gallery: "Photos on the Cake Gallery page - newest first, filtered by occasion.",
 };
@@ -32,8 +31,7 @@ const labelFor = (item) => item.name || `${item.occasion} photo`;
 const detailsFor = (item) => {
   if (item.section === "products") return `${item.category} · ${formatPrice(item.price)}`;
   if (item.section === "custom") return "Customized Cakes tile";
-  if (item.section === "gallery") return `${item.occasion} · ${item.shape}`;
-  return "New Creations slide";
+  return `${item.occasion} · ${item.shape}`;
 };
 
 const matches = (item, query) =>

@@ -139,5 +139,5 @@ export const useCakes = () => {
   return context;
 };
 
-/* Everything one section shows: "products" | "new" | "custom" | "gallery" */
+/* Everything one section shows: "products" | "custom" | "gallery" */
 export const useSectionCakes = (section) => useCakes().sections[section];
